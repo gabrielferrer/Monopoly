@@ -2,4 +2,6 @@
 # This .gitignore file was automatically created by Microsoft(R) Visual Studio.
 ################################################################################
 
+/Monopoly/bin
+/Monopoly/obj
 /.vs/Monopoly/v16/.suo
