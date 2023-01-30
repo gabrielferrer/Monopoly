@@ -36,9 +36,7 @@ namespace Monopoly.UI
         {
             return new RowDefinition
             {
-                Height = gridLength,
-                MinHeight = Constants.MinimumBoardCellHeight,
-                MaxHeight = Constants.MaximumBoardCellHeight
+                Height = gridLength
             };
         }
 
@@ -46,9 +44,7 @@ namespace Monopoly.UI
         {
             return new ColumnDefinition
             {
-                Width = gridLength,
-                MinWidth = Constants.MinimumBoardCellWidth,
-                MaxWidth = Constants.MaximumBoardCellWidth
+                Width = gridLength
             };
         }
 

@@ -1,20 +1,22 @@
 ﻿using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows;
+using System.Windows.Media;
 
 namespace Monopoly.VM
 {
     class BoardCell : ViewModelBase
     {
-        private int row = 0;
-        private int column = 0;
-        private int rowSpan = UI.Constants.DefaultBoardCellRowSpan;
-        private int columnSpan = UI.Constants.DefaultBoardCellColumnSpan;
-        private Thickness border;
-
-        public BoardCell(Spaces.Space space)
+        public BoardCell(BoardCellDto boardCellDto)
         {
-            Text = new ObservableCollection<string>(space.Text.Select(x => string.Copy(x)).ToArray());
+            Text = new ObservableCollection<string>(boardCellDto.Space.Text.Select(x => string.Copy(x)).ToArray());
+            Row = boardCellDto.Row;
+            Column = boardCellDto.Column;
+            RowSpan = boardCellDto.RowSpan;
+            ColumnSpan = boardCellDto.ColumnSpan;
+            Border = boardCellDto.Border;
+            Orientation = boardCellDto.Orientation;
+            StripeColor = boardCellDto.StripeColor.HasValue ? new SolidColorBrush(boardCellDto.StripeColor.Value) : null;
         }
 
         public ObservableCollection<string> Text { get; }
@@ -23,74 +25,20 @@ namespace Monopoly.VM
 
         public double Height => UI.Constants.BoardCellHeight;
 
-        public int Row
-        {
-            get
-            {
-                return row;
-            }
-            set
-            {
-                if (row == value) return;
-                row = value;
-                OnPropertyChanged(nameof(Row));
-            }
-        }
+        public double StripeThickness => UI.Constants.StripeThickness;
 
-        public int Column
-        {
-            get
-            {
-                return column;
-            }
-            set
-            {
-                if (column == value) return;
-                column = value;
-                OnPropertyChanged(nameof(Column));
-            }
-        }
+        public int Row { get; }
 
-        public int RowSpan
-        {
-            get
-            {
-                return rowSpan;
-            }
-            set
-            {
-                if (rowSpan == value) return;
-                rowSpan = value;
-                OnPropertyChanged(nameof(RowSpan));
-            }
-        }
+        public int Column { get; }
 
-        public int ColumnSpan
-        {
-            get
-            {
-                return columnSpan;
-            }
-            set
-            {
-                if (columnSpan == value) return;
-                columnSpan = value;
-                OnPropertyChanged(nameof(ColumnSpan));
-            }
-        }
+        public int RowSpan { get; }
 
-        public Thickness Border
-        {
-            get
-            {
-                return border;
-            }
-            set
-            {
-                if (border == value) return;
-                border = value;
-                OnPropertyChanged(nameof(Border));
-            }
-        }
+        public int ColumnSpan { get; }
+
+        public Thickness Border { get; }
+
+        public UI.BoardCellOrientation Orientation { get; }
+
+        public Brush StripeColor { get; }
     }
 }

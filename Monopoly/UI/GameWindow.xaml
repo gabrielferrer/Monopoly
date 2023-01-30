@@ -5,9 +5,19 @@
     xmlns:ui="clr-namespace:Monopoly.UI"
     Width="{Binding WindowWidth}"
     Height="{Binding WindowHeight}"
-    Background="DarkGray">
-    <ScrollViewer>
+    Background="{Binding WindowColor}">
+    <Window.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary
+                    Source="pack://application:,,,/Monopoly;component/UI/GameWindowStyles.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </Window.Resources>
+    <ScrollViewer
+        HorizontalScrollBarVisibility="Auto">
         <ItemsControl
+            ItemTemplateSelector="{StaticResource BoardCellTemplateSelector}"
             ItemsSource="{Binding BoardCells}">
             <ItemsControl.ItemsPanel>
                 <ItemsPanelTemplate>
@@ -17,34 +27,6 @@
                         IsItemsHost="True" />
                 </ItemsPanelTemplate>
             </ItemsControl.ItemsPanel>
-            <ItemsControl.ItemTemplate>
-                <DataTemplate>
-                    <Border
-                        Width="{Binding Width}"
-                        Height="{Binding Height}"
-                        BorderBrush="Black"
-                        BorderThickness="{Binding Border}">
-                        <ItemsControl
-                            VerticalAlignment="Center"
-                            ItemsSource="{Binding Text}">
-                            <ItemsControl.ItemsPanel>
-                                <ItemsPanelTemplate>
-                                    <StackPanel
-                                        Orientation="Vertical" />
-                                </ItemsPanelTemplate>
-                            </ItemsControl.ItemsPanel>
-                            <ItemsControl.ItemTemplate>
-                                <DataTemplate>
-                                    <TextBlock
-                                        HorizontalAlignment="Center"
-                                        Text="{Binding .}"
-                                        TextWrapping="Wrap" />
-                                </DataTemplate>
-                            </ItemsControl.ItemTemplate>
-                        </ItemsControl>
-                    </Border>
-                </DataTemplate>
-            </ItemsControl.ItemTemplate>
             <ItemsControl.ItemContainerStyle>
                 <Style>
                     <Setter

@@ -57,11 +57,18 @@
     </ApplicationDefinition>
     <Compile Include="Cards\ChanceTexts.cs" />
     <Compile Include="Cards\CommunityChestTexts.cs" />
+    <Compile Include="MarkupExtensions.cs" />
+    <Compile Include="MonopolyException.cs" />
+    <Compile Include="UI\BoardCellOrientation.cs" />
+    <Compile Include="UI\BoardCellTemplateSelector.cs" />
+    <Compile Include="UI\BrushToVisibilityConverter.cs" />
     <Compile Include="UI\Constants.cs" />
     <Compile Include="UI\GameWindow.xaml.cs">
       <DependentUpon>GameWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="UI\PropertyColors.cs" />
     <Compile Include="VM\BoardCell.cs" />
+    <Compile Include="VM\BoardCellDto.cs" />
     <Compile Include="VM\GameWindowViewModel.cs" />
     <Compile Include="PropertyNames.cs" />
     <Compile Include="Spaces\Chance.cs" />
@@ -124,6 +131,10 @@
   </ItemGroup>
   <ItemGroup>
     <Page Include="UI\GameWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UI\GameWindowStyles.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

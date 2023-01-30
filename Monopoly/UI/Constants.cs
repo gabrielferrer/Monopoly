@@ -1,17 +1,18 @@
-﻿namespace Monopoly.UI
+﻿using System.Windows.Media;
+
+namespace Monopoly.UI
 {
     static class Constants
     {
+        public static readonly Color BoardColor = (Color)ColorConverter.ConvertFromString("#e9e6db");
+
         public const int BoardRows = 11;
         public const int BoardColumns = 11;
-        public const int BoardCellWidth = 80;
-        public const int BoardCellHeight = 80;
-        public const int MinimumBoardCellWidth = 50;
-        public const int MaximumBoardCellWidth = 100;
-        public const int MinimumBoardCellHeight = 50;
-        public const int MaximumBoardCellHeight = 100;
+        public const int BoardCellWidth = 140;
+        public const int BoardCellHeight = 140;
         public const int DefaultBoardCellRowSpan = 1;
         public const int DefaultBoardCellColumnSpan = 1;
         public const double BoardCellBorderThickness = 2;
+        public const double StripeThickness = 40;
     }
 }
