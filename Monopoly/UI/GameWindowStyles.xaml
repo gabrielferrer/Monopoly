@@ -1,0 +1,210 @@
+﻿<ResourceDictionary
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:ui="clr-namespace:Monopoly.UI">
+
+    <DataTemplate
+        x:Key="CornerCellTemplate">
+        <Border
+            Width="{Binding Width}"
+            Height="{Binding Height}"
+            BorderBrush="Black"
+            BorderThickness="{Binding Border}">
+            <ItemsControl
+                VerticalAlignment="Center"
+                ItemsSource="{Binding Text}">
+                <ItemsControl.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <StackPanel
+                            Orientation="Vertical" />
+                    </ItemsPanelTemplate>
+                </ItemsControl.ItemsPanel>
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <TextBlock
+                            HorizontalAlignment="Center"
+                            Text="{Binding .}"
+                            TextWrapping="Wrap" />
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+        </Border>
+    </DataTemplate>
+
+    <DataTemplate
+        x:Key="EastCellTemplate">
+        <Border
+            Width="{Binding Width}"
+            Height="{Binding Height}"
+            BorderBrush="Black"
+            BorderThickness="{Binding Border}">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition
+                        Width="Auto" />
+                    <ColumnDefinition
+                        Width="*" />
+                </Grid.ColumnDefinitions>
+                <Border
+                    Width="{Binding StripeThickness}"
+                    HorizontalAlignment="Left"
+                    Background="{Binding StripeColor}"
+                    Visibility="{Binding StripeColor, Converter={ui:BrushToVisibilityConverter}, Mode=OneWay}" />
+                <ItemsControl
+                    Grid.Column="1"
+                    VerticalAlignment="Center"
+                    ItemsSource="{Binding Text}">
+                    <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <StackPanel
+                                Orientation="Vertical" />
+                        </ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <TextBlock
+                                HorizontalAlignment="Center"
+                                Text="{Binding .}"
+                                TextWrapping="Wrap" />
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+            </Grid>
+        </Border>
+    </DataTemplate>
+
+    <DataTemplate
+        x:Key="NorthCellTemplate">
+        <Border
+            Width="{Binding Width}"
+            Height="{Binding Height}"
+            BorderBrush="Black"
+            BorderThickness="{Binding Border}">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition
+                        Height="*" />
+                    <RowDefinition
+                        Height="Auto" />
+                </Grid.RowDefinitions>
+                <ItemsControl
+                    VerticalAlignment="Center"
+                    ItemsSource="{Binding Text}">
+                    <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <StackPanel
+                                Orientation="Vertical" />
+                        </ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <TextBlock
+                                HorizontalAlignment="Center"
+                                Text="{Binding .}"
+                                TextWrapping="Wrap" />
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+                <Border
+                    Grid.Row="1"
+                    Height="{Binding StripeThickness}"
+                    VerticalAlignment="Bottom"
+                    Background="{Binding StripeColor}"
+                    Visibility="{Binding StripeColor, Converter={ui:BrushToVisibilityConverter}, Mode=OneWay}" />
+            </Grid>
+        </Border>
+    </DataTemplate>
+
+    <DataTemplate
+        x:Key="SouthCellTemplate">
+        <Border
+            Width="{Binding Width}"
+            Height="{Binding Height}"
+            BorderBrush="Black"
+            BorderThickness="{Binding Border}">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition
+                        Height="Auto" />
+                    <RowDefinition
+                        Height="*" />
+                </Grid.RowDefinitions>
+                <Border
+                    Height="{Binding StripeThickness}"
+                    VerticalAlignment="Top"
+                    Background="{Binding StripeColor}"
+                    Visibility="{Binding StripeColor, Converter={ui:BrushToVisibilityConverter}, Mode=OneWay}" />
+                <ItemsControl
+                    Grid.Row="1"
+                    VerticalAlignment="Center"
+                    ItemsSource="{Binding Text}">
+                    <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <StackPanel
+                                Orientation="Vertical" />
+                        </ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <TextBlock
+                                HorizontalAlignment="Center"
+                                Text="{Binding .}"
+                                TextWrapping="Wrap" />
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+            </Grid>
+        </Border>
+    </DataTemplate>
+
+    <DataTemplate
+        x:Key="WestCellTemplate">
+        <Border
+            Width="{Binding Width}"
+            Height="{Binding Height}"
+            BorderBrush="Black"
+            BorderThickness="{Binding Border}">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition
+                        Width="*" />
+                    <ColumnDefinition
+                        Width="Auto" />
+                </Grid.ColumnDefinitions>
+                <ItemsControl
+                    VerticalAlignment="Center"
+                    ItemsSource="{Binding Text}">
+                    <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <StackPanel
+                                Orientation="Vertical" />
+                        </ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <TextBlock
+                                HorizontalAlignment="Center"
+                                Text="{Binding .}"
+                                TextWrapping="Wrap" />
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+                <Border
+                    Grid.Column="1"
+                    Width="{Binding StripeThickness}"
+                    HorizontalAlignment="Right"
+                    Background="{Binding StripeColor}"
+                    Visibility="{Binding StripeColor, Converter={ui:BrushToVisibilityConverter}, Mode=OneWay}" />
+            </Grid>
+        </Border>
+    </DataTemplate>
+
+    <ui:BoardCellTemplateSelector
+        x:Key="BoardCellTemplateSelector"
+        CornerCellTemplate="{StaticResource CornerCellTemplate}"
+        EastCellTemplate="{StaticResource EastCellTemplate}"
+        NorthCellTemplate="{StaticResource NorthCellTemplate}"
+        SouthCellTemplate="{StaticResource SouthCellTemplate}"
+        WestCellTemplate="{StaticResource WestCellTemplate}" />
+
+</ResourceDictionary>
