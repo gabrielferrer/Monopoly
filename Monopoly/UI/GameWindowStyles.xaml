@@ -3,6 +3,23 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:ui="clr-namespace:Monopoly.UI">
 
+    <Style
+        x:Key="SpaceTextStyle"
+        TargetType="{x:Type TextBlock}">
+        <Setter
+            Property="FontWeight"
+            Value="SemiBold" />
+        <Setter
+            Property="FontSize"
+            Value="14" />
+        <Setter
+            Property="HorizontalAlignment"
+            Value="Center" />
+        <Setter
+            Property="TextWrapping"
+            Value="Wrap" />
+    </Style>
+
     <DataTemplate
         x:Key="CornerCellTemplate">
         <Border
@@ -22,9 +39,8 @@
                 <ItemsControl.ItemTemplate>
                     <DataTemplate>
                         <TextBlock
-                            HorizontalAlignment="Center"
-                            Text="{Binding .}"
-                            TextWrapping="Wrap" />
+                            Style="{StaticResource SpaceTextStyle}"
+                            Text="{Binding .}" />
                     </DataTemplate>
                 </ItemsControl.ItemTemplate>
             </ItemsControl>
@@ -63,9 +79,8 @@
                     <ItemsControl.ItemTemplate>
                         <DataTemplate>
                             <TextBlock
-                                HorizontalAlignment="Center"
-                                Text="{Binding .}"
-                                TextWrapping="Wrap" />
+                                Style="{StaticResource SpaceTextStyle}"
+                                Text="{Binding .}" />
                         </DataTemplate>
                     </ItemsControl.ItemTemplate>
                 </ItemsControl>
@@ -99,9 +114,8 @@
                     <ItemsControl.ItemTemplate>
                         <DataTemplate>
                             <TextBlock
-                                HorizontalAlignment="Center"
-                                Text="{Binding .}"
-                                TextWrapping="Wrap" />
+                                Style="{StaticResource SpaceTextStyle}"
+                                Text="{Binding .}" />
                         </DataTemplate>
                     </ItemsControl.ItemTemplate>
                 </ItemsControl>
@@ -147,9 +161,8 @@
                     <ItemsControl.ItemTemplate>
                         <DataTemplate>
                             <TextBlock
-                                HorizontalAlignment="Center"
-                                Text="{Binding .}"
-                                TextWrapping="Wrap" />
+                                Style="{StaticResource SpaceTextStyle}"
+                                Text="{Binding .}" />
                         </DataTemplate>
                     </ItemsControl.ItemTemplate>
                 </ItemsControl>
@@ -183,9 +196,8 @@
                     <ItemsControl.ItemTemplate>
                         <DataTemplate>
                             <TextBlock
-                                HorizontalAlignment="Center"
-                                Text="{Binding .}"
-                                TextWrapping="Wrap" />
+                                Style="{StaticResource SpaceTextStyle}"
+                                Text="{Binding .}" />
                         </DataTemplate>
                     </ItemsControl.ItemTemplate>
                 </ItemsControl>
