@@ -3,7 +3,7 @@ using System.Windows.Media;
 
 namespace Monopoly.VM
 {
-    class BoardCellDto
+    public class BoardCellDto
     {
         public int Row { get; set; }
 

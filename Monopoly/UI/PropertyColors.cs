@@ -2,7 +2,7 @@
 
 namespace Monopoly.UI
 {
-    static class PropertyColors
+    public static class PropertyColors
     {
         public static readonly Color FirstGroup = (Color)ColorConverter.ConvertFromString("#a52a2a");
         public static readonly Color SecondGroup = (Color)ColorConverter.ConvertFromString("#80ccff");

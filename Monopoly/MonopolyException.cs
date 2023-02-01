@@ -2,7 +2,7 @@
 
 namespace Monopoly
 {
-    class MonopolyException : Exception
+    public class MonopolyException : Exception
     {
         public MonopolyException(string message) : base(message) { }
     }

@@ -2,13 +2,18 @@
 
 namespace Monopoly.Spaces
 {
-    abstract class Space
+    public abstract class Space
     {
         protected List<Player> visitors;
 
         public Space()
         {
             visitors = new List<Player>();
+        }
+
+        public void Clear()
+        {
+            visitors.Clear();
         }
 
 #if DEBUG

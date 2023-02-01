@@ -2,7 +2,7 @@
 
 namespace Monopoly.Spaces
 {
-    abstract class Property : Space
+    public abstract class Property : Space
     {
         protected readonly Titles.TitleDeed titleDeed;
 

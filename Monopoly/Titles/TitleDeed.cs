@@ -1,6 +1,6 @@
 ﻿namespace Monopoly.Titles
 {
-    abstract class TitleDeed
+    public abstract class TitleDeed
     {
         protected readonly string name;
         protected readonly int price;

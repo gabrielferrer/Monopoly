@@ -3,18 +3,20 @@ using System.Collections.Generic;
 
 namespace Monopoly
 {
-    class Game
+    public class Game
     {
         private Board board;
         private List<Titles.TitleDeed> titleDeeds;
         private List<Cards.CommunityChest> communityChest;
         private List<Cards.Chance> chance;
         private List<Player> players;
+        private List<Player> currentPlayers;
         private int hotels;
         private int houses;
 
         public Game()
         {
+            currentPlayers = new List<Player>();
             players = new List<Player>();
 
             players.Add(new Player(TokenNames.Cannon));
@@ -97,8 +99,8 @@ namespace Monopoly
             titleDeeds.Add(new Titles.Street(PropertyNames.Boardwalk, 400, 50, 200, new[] { 200, 600, 1400, 1700 }, 2000, 200, 200));
 
             board = new Board(titleDeeds);
-            hotels = 12;
-            houses = 32;
+            hotels = GameConstants.TotalHotels;
+            houses = GameConstants.TotalHouses;
         }
 
         #region Rules
@@ -245,6 +247,21 @@ namespace Monopoly
 
         #endregion
 
+        public void Start(int players)
+        {
+            if (players < GameConstants.MinimumPlayers || players > GameConstants.MaximumPlayers) throw new MonopolyException($"Invalid players count {players}");
+
+            currentPlayers.Clear();
+            board.Clear();
+
+            for (int player = 0; player < players; player++)
+            {
+                currentPlayers.Add(this.players[player]);
+            }
+
+            Running = true;
+        }
+
 #if DEBUG
         public void Log(System.IO.StreamWriter stream)
         {
@@ -259,5 +276,7 @@ namespace Monopoly
 #endif
 
         public Board Board => board;
+
+        public bool Running { get; private set; }
     }
 }

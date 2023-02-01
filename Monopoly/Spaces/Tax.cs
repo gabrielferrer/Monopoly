@@ -1,6 +1,6 @@
 ﻿namespace Monopoly.Spaces
 {
-    abstract class Tax : Space
+    public abstract class Tax : Space
     {
         protected readonly int value;
 

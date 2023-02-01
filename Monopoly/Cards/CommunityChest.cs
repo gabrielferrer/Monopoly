@@ -1,6 +1,6 @@
 ﻿namespace Monopoly.Cards
 {
-    class CommunityChest : Card
+    public class CommunityChest : Card
     {
         public CommunityChest(string text, System.Action<Board, Player> rule) : base(text, rule) { }
 

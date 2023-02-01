@@ -2,7 +2,7 @@
 
 namespace Monopoly.Spaces
 {
-    class Parking : Space
+    public class Parking : Space
     {
         public override IEnumerable<string> Text => new[] { "Free Parking" };
     }

@@ -3,7 +3,7 @@ using System.Windows.Controls;
 
 namespace Monopoly.UI
 {
-    class BoardCellTemplateSelector : DataTemplateSelector
+    public class BoardCellTemplateSelector : DataTemplateSelector
     {
         public DataTemplate CornerCellTemplate { get; set; }
 

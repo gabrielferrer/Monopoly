@@ -1,6 +1,6 @@
 ﻿namespace Monopoly.Cards
 {
-    class Chance : Card
+    public class Chance : Card
     {
         public Chance(string text, System.Action<Board, Player> rule) : base(text, rule) { }
 

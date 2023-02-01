@@ -1,6 +1,6 @@
 ﻿namespace Monopoly.Cards
 {
-    static class CommunityChestTexts
+    public static class CommunityChestTexts
     {
         public const string AdvanceToGo = "Advance to \"Go\". (Collect $200)";
         public const string BankError = "Bank error in your favor.Collect $200.";

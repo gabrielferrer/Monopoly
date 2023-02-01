@@ -3,7 +3,7 @@ using System.Linq;
 
 namespace Monopoly
 {
-    class Board
+    public class Board
     {
         private List<Spaces.Space> spaces;
 
@@ -51,6 +51,11 @@ namespace Monopoly
             spaces.Add(new Spaces.Street(titleDeeds.First(x => x.Name == PropertyNames.ParkPlace)));
             spaces.Add(new Spaces.LuxuryTax(75));
             spaces.Add(new Spaces.Street(titleDeeds.First(x => x.Name == PropertyNames.Boardwalk)));
+        }
+
+        public void Clear()
+        {
+            foreach (var space in spaces) space.Clear();
         }
 
 #if DEBUG

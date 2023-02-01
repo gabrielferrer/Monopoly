@@ -1,17 +1,19 @@
 ﻿using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows;
+using System.Windows.Input;
 using System.Windows.Media;
 
 namespace Monopoly.VM
 {
-    class GameWindowViewModel : ViewModelBase
+    public class GameWindowViewModel : ViewModelBase
     {
         #region Fields
 
         private Game game;
         private double[] rowDefinitions;
         private double[] columnDefinitions;
+        private int players;
 
         #endregion
 
@@ -19,6 +21,9 @@ namespace Monopoly.VM
 
         public GameWindowViewModel()
         {
+            NewGameCommand = new RelayCommand(param => CanStartNewGame, param => NewGameParameters());
+            ExitCommand = new RelayCommand(param => CanExit(), param => Exit());
+
             rowDefinitions = new double[UI.Constants.BoardRows];
             columnDefinitions = new double[UI.Constants.BoardColumns];
             BoardCells = new ObservableCollection<BoardCell>();
@@ -41,6 +46,18 @@ namespace Monopoly.VM
             //game.Log(stream);
             //}
 #endif
+        }
+
+        private void NewGameParameters()
+        {
+            var window = new UI.NewGameWindow();
+            window.DataContext.NewGame += OnNewGame;
+            window.Show();
+        }
+
+        private void OnNewGame(object sender, Events.NewGameArgs args)
+        {
+            game.Start(args.Players);
         }
 
         private void CreateBoardRightRow(ref int index)
@@ -149,7 +166,7 @@ namespace Monopoly.VM
             return new Thickness(UI.Constants.BoardCellBorderThickness);
         }
 
-        public Color? GetStripeColor(int index)
+        private Color? GetStripeColor(int index)
         {
             switch (index)
             {
@@ -166,9 +183,27 @@ namespace Monopoly.VM
             return null;
         }
 
+        private bool CanExit()
+        {
+            if (game.Running)
+            {
+                var result = MessageBox.Show("There is a game in progress. Do you want to exit?", "Exit Game", MessageBoxButton.YesNo);
+                return result == MessageBoxResult.Yes;
+            }
+
+            return true;
+        }
+
+        private void Exit()
+        {
+            Application.Current.Shutdown();
+        }
+
         #endregion
 
         #region Properties
+
+        private bool CanStartNewGame => !game.Running;
 
         public Brush WindowColor => new SolidColorBrush(UI.Constants.BoardColor);
 
@@ -185,6 +220,28 @@ namespace Monopoly.VM
         public int Columns => columnDefinitions.Length;
 
         public ObservableCollection<BoardCell> BoardCells { get; }
+
+        public int Players
+        {
+            get
+            {
+                return players;
+            }
+            set
+            {
+                if (players == value) return;
+                players = value;
+                OnPropertyChanged(nameof(Players));
+            }
+        }
+
+        #endregion
+
+        #region Commands
+
+        public ICommand NewGameCommand { get; }
+
+        public ICommand ExitCommand { get; }
 
         #endregion
     }

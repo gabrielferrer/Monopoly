@@ -4,7 +4,7 @@ using System.Diagnostics;
 
 namespace Monopoly.VM
 {
-    class ViewModelBase
+    public class ViewModelBase
     {
         public bool ThrowOnInvalidPropertyName { get; set; }
 

@@ -1,6 +1,6 @@
 ﻿namespace Monopoly.Cards
 {
-    static class ChanceTexts
+    public static class ChanceTexts
     {
         public const string AdvanceToGo = "Advance to \"Go\". (Collect $200)";
         public const string AdvanceToIllinois = "Advance to Illinois Ave. If you pass Go, collect $200.";

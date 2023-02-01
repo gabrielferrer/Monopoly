@@ -1,6 +1,6 @@
 ﻿namespace Monopoly.Titles
 {
-    class Railroad : TitleDeed
+    public class Railroad : TitleDeed
     {
         private readonly int[] rents;
 

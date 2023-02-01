@@ -1,6 +1,6 @@
 ﻿namespace Monopoly.Cards
 {
-    abstract class Card
+    public abstract class Card
     {
         protected readonly string text;
         protected System.Action<Board, Player> rule;

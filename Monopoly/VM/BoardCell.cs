@@ -5,7 +5,7 @@ using System.Windows.Media;
 
 namespace Monopoly.VM
 {
-    class BoardCell : ViewModelBase
+    public class BoardCell : ViewModelBase
     {
         public BoardCell(BoardCellDto boardCellDto)
         {

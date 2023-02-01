@@ -2,7 +2,7 @@
 
 namespace Monopoly.Spaces
 {
-    class Chance : Space
+    public class Chance : Space
     {
         public override IEnumerable<string> Text => new[] { "Chance" };
     }

@@ -2,7 +2,7 @@
 
 namespace Monopoly.Spaces
 {
-    class LuxuryTax : Tax
+    public class LuxuryTax : Tax
     {
         public LuxuryTax(int value) : base(value) { }
 

@@ -1,6 +1,6 @@
 ﻿namespace Monopoly.Titles
 {
-    class Street : TitleDeed
+    public class Street : TitleDeed
     {
         private readonly int[] houseRent;
         private readonly int hotelRent;

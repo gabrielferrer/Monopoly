@@ -2,7 +2,7 @@
 
 namespace Monopoly.Spaces
 {
-    class GoToJail : Space
+    public class GoToJail : Space
     {
         public override IEnumerable<string> Text => new[] { "Go To Jail" };
     }

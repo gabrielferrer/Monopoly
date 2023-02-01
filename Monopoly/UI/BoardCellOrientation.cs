@@ -1,6 +1,6 @@
 ﻿namespace Monopoly.UI
 {
-    enum BoardCellOrientation
+    public enum BoardCellOrientation
     {
         West,
         NorthWest,

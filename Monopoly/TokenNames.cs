@@ -1,6 +1,6 @@
 ﻿namespace Monopoly
 {
-    static class TokenNames
+    public static class TokenNames
     {
         public const string Cannon = "Cannon";
         public const string Thimble = "Thimble";

@@ -1,6 +1,6 @@
 ﻿namespace Monopoly
 {
-    class Player
+    public class Player
     {
         private readonly string name;
         private int money;

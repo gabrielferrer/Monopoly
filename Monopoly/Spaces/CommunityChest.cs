@@ -2,7 +2,7 @@
 
 namespace Monopoly.Spaces
 {
-    class CommunityChest : Space
+    public class CommunityChest : Space
     {
         public override IEnumerable<string> Text => new[] { "Community Chest" };
     }

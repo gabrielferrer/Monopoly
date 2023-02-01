@@ -2,7 +2,7 @@
 
 namespace Monopoly.Spaces
 {
-    class IncommeTax : Tax
+    public class IncommeTax : Tax
     {
         private readonly int percentage;
 

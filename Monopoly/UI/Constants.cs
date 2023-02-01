@@ -2,7 +2,7 @@
 
 namespace Monopoly.UI
 {
-    static class Constants
+    public static class Constants
     {
         public static readonly Color BoardColor = (Color)ColorConverter.ConvertFromString("#e9e6db");
 

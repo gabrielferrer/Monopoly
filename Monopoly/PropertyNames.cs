@@ -1,6 +1,6 @@
 ﻿namespace Monopoly
 {
-    static class PropertyNames
+    public static class PropertyNames
     {
         public const string MediterraneanAvenue = "Mediterranean Avenue";
         public const string BalticAvenue = "Baltic Avenue";
