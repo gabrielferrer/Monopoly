@@ -17,15 +17,15 @@ namespace Monopoly.UI
 
         public override DataTemplate SelectTemplate(object item, DependencyObject container)
         {
-            if (!(item is VM.BoardCell boardCell)) return null;
+            if (!(item is VM.Spaces.Space space)) return null;
 
-            if (boardCell.Orientation == BoardCellOrientation.West) return WestCellTemplate;
+            if (space.Orientation == BoardCellOrientation.West) return WestCellTemplate;
 
-            if (boardCell.Orientation == BoardCellOrientation.North) return NorthCellTemplate;
+            if (space.Orientation == BoardCellOrientation.North) return NorthCellTemplate;
 
-            if (boardCell.Orientation == BoardCellOrientation.East) return EastCellTemplate;
+            if (space.Orientation == BoardCellOrientation.East) return EastCellTemplate;
 
-            if (boardCell.Orientation == BoardCellOrientation.South) return SouthCellTemplate;
+            if (space.Orientation == BoardCellOrientation.South) return SouthCellTemplate;
 
             return CornerCellTemplate;
         }

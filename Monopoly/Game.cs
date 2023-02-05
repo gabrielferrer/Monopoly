@@ -1,34 +1,37 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Monopoly
 {
     public class Game
     {
-        private Board board;
         private List<Titles.TitleDeed> titleDeeds;
         private List<Cards.CommunityChest> communityChest;
         private List<Cards.Chance> chance;
-        private List<Player> players;
-        private List<Player> currentPlayers;
+        private List<VM.Player> players;
         private int hotels;
         private int houses;
 
         public Game()
         {
-            currentPlayers = new List<Player>();
-            players = new List<Player>();
+            CurrentPlayers = new List<VM.Player>();
+            players = new List<VM.Player>();
 
-            players.Add(new Player(TokenNames.Cannon));
-            players.Add(new Player(TokenNames.Thimble));
-            players.Add(new Player(TokenNames.TopHat));
-            players.Add(new Player(TokenNames.Iron));
-            players.Add(new Player(TokenNames.Battleship));
-            players.Add(new Player(TokenNames.Boot));
-            players.Add(new Player(TokenNames.RaceCar));
-            players.Add(new Player(TokenNames.Dog));
-            players.Add(new Player(TokenNames.Rider));
-            players.Add(new Player(TokenNames.Wheelbarrow));
+            players.Add(new VM.Player(TokenNames.Cannon, UI.PlayerColors.LightRed));
+            players.Add(new VM.Player(TokenNames.Thimble, UI.PlayerColors.Ocher));
+            players.Add(new VM.Player(TokenNames.TopHat, UI.PlayerColors.Lime));
+            players.Add(new VM.Player(TokenNames.Iron, UI.PlayerColors.Cyan));
+            players.Add(new VM.Player(TokenNames.Battleship, UI.PlayerColors.Violet));
+            players.Add(new VM.Player(TokenNames.Boot, UI.PlayerColors.Orange));
+            players.Add(new VM.Player(TokenNames.RaceCar, UI.PlayerColors.Teal));
+            players.Add(new VM.Player(TokenNames.Dog, UI.PlayerColors.Lila));
+            players.Add(new VM.Player(TokenNames.Rider, UI.PlayerColors.Yellow));
+            players.Add(new VM.Player(TokenNames.Wheelbarrow, UI.PlayerColors.LightBlue));
+            players.Add(new VM.Player(TokenNames.Airplane, UI.PlayerColors.DarkPink));
+            players.Add(new VM.Player(TokenNames.Train, UI.PlayerColors.Green));
+            players.Add(new VM.Player(TokenNames.Bathtub, UI.PlayerColors.Red));
+            players.Add(new VM.Player(TokenNames.Lantern, UI.PlayerColors.Blue));
 
             communityChest = new List<Cards.CommunityChest>();
 
@@ -98,149 +101,149 @@ namespace Monopoly
             titleDeeds.Add(new Titles.Street(PropertyNames.ParkPlace, 350, 35, 175, new[] { 175, 500, 1100, 1300 }, 1500, 200, 200));
             titleDeeds.Add(new Titles.Street(PropertyNames.Boardwalk, 400, 50, 200, new[] { 200, 600, 1400, 1700 }, 2000, 200, 200));
 
-            board = new Board(titleDeeds);
+            Board = new Board(titleDeeds);
             hotels = GameConstants.TotalHotels;
             houses = GameConstants.TotalHouses;
         }
 
         #region Rules
 
-        private void RuleInherit(Board board, Player targetPlayer)
+        private void RuleInherit(Board board, VM.Player targetPlayer)
         {
             throw new NotImplementedException();
         }
 
-        private void RuleBeautyContest(Board board, Player targetPlayer)
+        private void RuleBeautyContest(Board board, VM.Player targetPlayer)
         {
             throw new NotImplementedException();
         }
 
-        private void RuleStreetRepairs(Board board, Player targetPlayer)
+        private void RuleStreetRepairs(Board board, VM.Player targetPlayer)
         {
             throw new NotImplementedException();
         }
 
-        private void RuleConsultancyFee(Board board, Player targetPlayer)
+        private void RuleConsultancyFee(Board board, VM.Player targetPlayer)
         {
             throw new NotImplementedException();
         }
 
-        private void RuleSchoolFees(Board board, Player targetPlayer)
+        private void RuleSchoolFees(Board board, VM.Player targetPlayer)
         {
             throw new NotImplementedException();
         }
 
-        private void RuleHospitalFees(Board board, Player targetPlayer)
+        private void RuleHospitalFees(Board board, VM.Player targetPlayer)
         {
             throw new NotImplementedException();
         }
 
-        private void RuleLifeInsurance(Board board, Player targetPlayer)
+        private void RuleLifeInsurance(Board board, VM.Player targetPlayer)
         {
             throw new NotImplementedException();
         }
 
-        private void RuleBirthday(Board board, Player targetPlayer)
+        private void RuleBirthday(Board board, VM.Player targetPlayer)
         {
             throw new NotImplementedException();
         }
 
-        private void RuleIncomeTaxRefund(Board board, Player targetPlayer)
+        private void RuleIncomeTaxRefund(Board board, VM.Player targetPlayer)
         {
             throw new NotImplementedException();
         }
 
-        private void RuleHolidayFund(Board board, Player targetPlayer)
+        private void RuleHolidayFund(Board board, VM.Player targetPlayer)
         {
             throw new NotImplementedException();
         }
 
-        private void RuleGrandOperaNight(Board board, Player targetPlayer)
+        private void RuleGrandOperaNight(Board board, VM.Player targetPlayer)
         {
             throw new NotImplementedException();
         }
 
-        private void RuleStockSale(Board board, Player targetPlayer)
+        private void RuleStockSale(Board board, VM.Player targetPlayer)
         {
             throw new NotImplementedException();
         }
 
-        private void RuleDoctorFees(Board board, Player targetPlayer)
+        private void RuleDoctorFees(Board board, VM.Player targetPlayer)
         {
             throw new NotImplementedException();
         }
 
-        private void RuleBankError(Board board, Player targetPlayer)
+        private void RuleBankError(Board board, VM.Player targetPlayer)
         {
             throw new NotImplementedException();
         }
 
-        private void RuleLoanMatures(Board board, Player targetPlayer)
+        private void RuleLoanMatures(Board board, VM.Player targetPlayer)
         {
             throw new NotImplementedException();
         }
 
-        private void RuleElectedChairman(Board board, Player targetPlayer)
+        private void RuleElectedChairman(Board board, VM.Player targetPlayer)
         {
             throw new NotImplementedException();
         }
 
-        private void RuleTakeWalkOnBoardwalk(Board board, Player targetPlayer)
+        private void RuleTakeWalkOnBoardwalk(Board board, VM.Player targetPlayer)
         {
             throw new NotImplementedException();
         }
 
-        private void RuleTakeTripToReading(Board board, Player targetPlayer)
+        private void RuleTakeTripToReading(Board board, VM.Player targetPlayer)
         {
             throw new NotImplementedException();
         }
 
-        private void RuleMakeGeneralRepairs(Board board, Player targetPlayer)
+        private void RuleMakeGeneralRepairs(Board board, VM.Player targetPlayer)
         {
             throw new NotImplementedException();
         }
 
-        private void RuleGoToJail(Board board, Player targetPlayer)
+        private void RuleGoToJail(Board board, VM.Player targetPlayer)
         {
             throw new NotImplementedException();
         }
 
-        private void RuleGoBackThreeSpaces(Board board, Player targetPlayer)
+        private void RuleGoBackThreeSpaces(Board board, VM.Player targetPlayer)
         {
             throw new NotImplementedException();
         }
 
-        private void RuleGetOutOfJailFree(Board board, Player targetPlayer)
+        private void RuleGetOutOfJailFree(Board board, VM.Player targetPlayer)
         {
             throw new NotImplementedException();
         }
 
-        private void RuleBankPaysDividend(Board board, Player targetPlayer)
+        private void RuleBankPaysDividend(Board board, VM.Player targetPlayer)
         {
             throw new NotImplementedException();
         }
 
-        private void RuleAdvanceToNearestRailroad(Board board, Player targetPlayer)
+        private void RuleAdvanceToNearestRailroad(Board board, VM.Player targetPlayer)
         {
             throw new NotImplementedException();
         }
 
-        private void RuleAdvanceToNearestUtility(Board board, Player targetPlayer)
+        private void RuleAdvanceToNearestUtility(Board board, VM.Player targetPlayer)
         {
             throw new NotImplementedException();
         }
 
-        private void RuleAdvanceStCharlesPlace(Board board, Player targetPlayer)
+        private void RuleAdvanceStCharlesPlace(Board board, VM.Player targetPlayer)
         {
             throw new NotImplementedException();
         }
 
-        private void RuleAdvanceToIllinois(Board board, Player targetPlayer)
+        private void RuleAdvanceToIllinois(Board board, VM.Player targetPlayer)
         {
             throw new NotImplementedException();
         }
 
-        private void RuleAdvanceToGo(Board board, Player targetPlayer)
+        private void RuleAdvanceToGo(Board board, VM.Player targetPlayer)
         {
             throw new NotImplementedException();
         }
@@ -251,13 +254,35 @@ namespace Monopoly
         {
             if (players < GameConstants.MinimumPlayers || players > GameConstants.MaximumPlayers) throw new MonopolyException($"Invalid players count {players}");
 
-            currentPlayers.Clear();
-            board.Clear();
+            CurrentPlayers.Clear();
+            Board.Clear();
 
-            for (int player = 0; player < players; player++)
+            foreach (var player in this.players) player.Clear();
+
+            var allTokens = TokenNames.AllTokens();
+            var totalTokens = TokenNames.TotalTokens();
+            var random = new Random();
+            bool noRandom = false;
+
+            for (int index = 0; CurrentPlayers.Count < players;)
             {
-                currentPlayers.Add(this.players[player]);
+                if (!noRandom) index = random.Next(totalTokens);
+
+                var player = this.players.First(x => x.Name == allTokens[index]);
+
+                if (!CurrentPlayers.Contains(player))
+                {
+                    CurrentPlayers.Add(player);
+                    if (noRandom) noRandom = false;
+                }
+                else
+                {
+                    if (++index == totalTokens) index = 0;
+                    noRandom = true;
+                }
             }
+
+            Board.Init(CurrentPlayers);
 
             Running = true;
         }
@@ -269,13 +294,15 @@ namespace Monopoly
             foreach (var card in communityChest) card.Log(stream);
             foreach (var card in chance) card.Log(stream);
             foreach (var player in players) player.Log(stream);
-            board.Log(stream);
+            Board.Log(stream);
             stream.WriteLine($"Hotels: {hotels}");
             stream.WriteLine($"Houses: {houses}");
         }
 #endif
 
-        public Board Board => board;
+        public Board Board { get; }
+
+        public List<VM.Player> CurrentPlayers { get; }
 
         public bool Running { get; private set; }
     }

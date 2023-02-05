@@ -32,7 +32,7 @@
             HorizontalScrollBarVisibility="Auto">
             <ItemsControl
                 ItemTemplateSelector="{StaticResource BoardCellTemplateSelector}"
-                ItemsSource="{Binding BoardCells}">
+                ItemsSource="{Binding Spaces}">
                 <ItemsControl.ItemsPanel>
                     <ItemsPanelTemplate>
                         <Grid

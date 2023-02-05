@@ -1,12 +1,12 @@
 ﻿using System.Collections.Generic;
 
-namespace Monopoly.Spaces
+namespace Monopoly.VM.Spaces
 {
     public class IncommeTax : Tax
     {
         private readonly int percentage;
 
-        public IncommeTax(int percentage, int value) : base(value)
+        public IncommeTax(int percentage, int value, SpaceDto spaceDto) : base(value, spaceDto)
         {
             this.percentage = percentage;
         }

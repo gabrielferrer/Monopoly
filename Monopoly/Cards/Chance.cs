@@ -2,7 +2,7 @@
 {
     public class Chance : Card
     {
-        public Chance(string text, System.Action<Board, Player> rule) : base(text, rule) { }
+        public Chance(string text, System.Action<Board, VM.Player> rule) : base(text, rule) { }
 
 #if DEBUG
         public void Log(System.IO.StreamWriter stream)

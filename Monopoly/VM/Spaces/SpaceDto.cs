@@ -1,9 +1,9 @@
 ﻿using System.Windows;
 using System.Windows.Media;
 
-namespace Monopoly.VM
+namespace Monopoly.VM.Spaces
 {
-    public class BoardCellDto
+    public class SpaceDto
     {
         public int Row { get; set; }
 

@@ -20,31 +20,64 @@
             Value="Wrap" />
     </Style>
 
+    <Style
+        x:Key="PlayerBorderStyle"
+        TargetType="{x:Type Border}">
+        <Setter
+            Property="Margin"
+            Value="2" />
+    </Style>
+
     <DataTemplate
         x:Key="CornerCellTemplate">
-        <Border
-            Width="{Binding Width}"
-            Height="{Binding Height}"
-            BorderBrush="Black"
-            BorderThickness="{Binding Border}">
+        <Grid>
+            <!--  Players in this space  -->
             <ItemsControl
+                HorizontalAlignment="Center"
                 VerticalAlignment="Center"
-                ItemsSource="{Binding Text}">
+                Panel.ZIndex="1"
+                ItemsSource="{Binding Visitors}">
                 <ItemsControl.ItemsPanel>
                     <ItemsPanelTemplate>
-                        <StackPanel
-                            Orientation="Vertical" />
+                        <UniformGrid
+                            Columns="{Binding PlayerColumns}"
+                            Rows="{Binding PlayerRows}" />
                     </ItemsPanelTemplate>
                 </ItemsControl.ItemsPanel>
                 <ItemsControl.ItemTemplate>
                     <DataTemplate>
-                        <TextBlock
-                            Style="{StaticResource SpaceTextStyle}"
-                            Text="{Binding .}" />
+                        <Border
+                            Width="{Binding PlayerWidth}"
+                            Height="{Binding PlayerHeight}"
+                            Background="{Binding PlayerColor}"
+                            Style="{StaticResource PlayerBorderStyle}" />
                     </DataTemplate>
                 </ItemsControl.ItemTemplate>
             </ItemsControl>
-        </Border>
+            <Border
+                Width="{Binding Width}"
+                Height="{Binding Height}"
+                BorderBrush="Black"
+                BorderThickness="{Binding Border}">
+                <ItemsControl
+                    VerticalAlignment="Center"
+                    ItemsSource="{Binding Text}">
+                    <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <StackPanel
+                                Orientation="Vertical" />
+                        </ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <TextBlock
+                                Style="{StaticResource SpaceTextStyle}"
+                                Text="{Binding .}" />
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+            </Border>
+        </Grid>
     </DataTemplate>
 
     <DataTemplate
@@ -61,6 +94,29 @@
                     <ColumnDefinition
                         Width="*" />
                 </Grid.ColumnDefinitions>
+                <!--  Players in this space  -->
+                <ItemsControl
+                    Grid.ColumnSpan="2"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center"
+                    Panel.ZIndex="1">
+                    <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <UniformGrid
+                                Columns="{Binding PlayerColumns}"
+                                Rows="{Binding PlayerRows}" />
+                        </ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <Border
+                                Width="{Binding PlayerWidth}"
+                                Height="{Binding PlayerHeight}"
+                                Background="{Binding PlayerColor}"
+                                Style="{StaticResource PlayerBorderStyle}" />
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
                 <Border
                     Width="{Binding StripeThickness}"
                     HorizontalAlignment="Left"
@@ -102,6 +158,29 @@
                     <RowDefinition
                         Height="Auto" />
                 </Grid.RowDefinitions>
+                <!--  Players in this space  -->
+                <ItemsControl
+                    Grid.RowSpan="2"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center"
+                    Panel.ZIndex="1">
+                    <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <UniformGrid
+                                Columns="{Binding PlayerColumns}"
+                                Rows="{Binding PlayerRows}" />
+                        </ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <Border
+                                Width="{Binding PlayerWidth}"
+                                Height="{Binding PlayerHeight}"
+                                Background="{Binding PlayerColor}"
+                                Style="{StaticResource PlayerBorderStyle}" />
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
                 <ItemsControl
                     VerticalAlignment="Center"
                     ItemsSource="{Binding Text}">
@@ -143,6 +222,29 @@
                     <RowDefinition
                         Height="*" />
                 </Grid.RowDefinitions>
+                <!--  Players in this space  -->
+                <ItemsControl
+                    Grid.RowSpan="2"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center"
+                    Panel.ZIndex="1">
+                    <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <UniformGrid
+                                Columns="{Binding PlayerColumns}"
+                                Rows="{Binding PlayerRows}" />
+                        </ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <Border
+                                Width="{Binding PlayerWidth}"
+                                Height="{Binding PlayerHeight}"
+                                Background="{Binding PlayerColor}"
+                                Style="{StaticResource PlayerBorderStyle}" />
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
                 <Border
                     Height="{Binding StripeThickness}"
                     VerticalAlignment="Top"
@@ -184,6 +286,29 @@
                     <ColumnDefinition
                         Width="Auto" />
                 </Grid.ColumnDefinitions>
+                <!--  Players in this space  -->
+                <ItemsControl
+                    Grid.ColumnSpan="2"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center"
+                    Panel.ZIndex="1">
+                    <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <UniformGrid
+                                Columns="{Binding PlayerColumns}"
+                                Rows="{Binding PlayerRows}" />
+                        </ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <Border
+                                Width="{Binding PlayerWidth}"
+                                Height="{Binding PlayerHeight}"
+                                Background="{Binding PlayerColor}"
+                                Style="{StaticResource PlayerBorderStyle}" />
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
                 <ItemsControl
                     VerticalAlignment="Center"
                     ItemsSource="{Binding Text}">

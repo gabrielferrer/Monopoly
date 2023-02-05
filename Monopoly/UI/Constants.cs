@@ -14,5 +14,6 @@ namespace Monopoly.UI
         public const int DefaultBoardCellColumnSpan = 1;
         public const double BoardCellBorderThickness = 2;
         public const double StripeThickness = 40;
+        public const double PlayerSize = 25;
     }
 }

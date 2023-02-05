@@ -1,12 +1,12 @@
 ﻿using System.Collections.Generic;
 
-namespace Monopoly.Spaces
+namespace Monopoly.VM.Spaces
 {
     public abstract class Property : Space
     {
         protected readonly Titles.TitleDeed titleDeed;
 
-        public Property(Titles.TitleDeed titleDeed)
+        public Property(Titles.TitleDeed titleDeed, SpaceDto spaceDto) : base(spaceDto)
         {
             this.titleDeed = titleDeed;
         }
