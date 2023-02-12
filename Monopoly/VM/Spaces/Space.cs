@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Collections.Specialized;
 using System.Windows;
 using System.Windows.Media;
 
@@ -8,9 +7,6 @@ namespace Monopoly.VM.Spaces
 {
     public abstract class Space : ViewModelBase
     {
-        private int playerRows;
-        private int playerColumns;
-
         public Space(SpaceDto spaceDto)
         {
             Visitors = new ObservableCollection<Player>();
@@ -32,9 +28,6 @@ namespace Monopoly.VM.Spaces
         {
             Visitors.Clear();
             foreach (var visitor in visitors) Visitors.Add(visitor);
-            OnPropertyChanged(nameof(Visitors));
-            PlayerRows = Visitors.Count <= GameConstants.MaximumPlayers / 2 ? 1 : 2;
-            PlayerColumns = Visitors.Count % 2 == 0 ? Visitors.Count / 2 : Visitors.Count / 2 + 1;
         }
 
 #if DEBUG
@@ -69,33 +62,5 @@ namespace Monopoly.VM.Spaces
         public UI.BoardCellOrientation Orientation { get; }
 
         public Brush StripeColor { get; }
-
-        public int PlayerRows
-        {
-            get
-            {
-                return playerRows;
-            }
-            set
-            {
-                if (playerRows == value) return;
-                playerRows = value;
-                OnPropertyChanged(nameof(PlayerRows));
-            }
-        }
-
-        public int PlayerColumns
-        {
-            get
-            {
-                return playerColumns;
-            }
-            set
-            {
-                if (playerColumns == value) return;
-                playerColumns = value;
-                OnPropertyChanged(nameof(PlayerColumns));
-            }
-        }
     }
 }

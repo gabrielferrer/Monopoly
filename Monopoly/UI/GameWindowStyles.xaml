@@ -39,9 +39,7 @@
                 ItemsSource="{Binding Visitors}">
                 <ItemsControl.ItemsPanel>
                     <ItemsPanelTemplate>
-                        <UniformGrid
-                            Columns="{Binding PlayerColumns}"
-                            Rows="{Binding PlayerRows}" />
+                        <UniformGrid />
                     </ItemsPanelTemplate>
                 </ItemsControl.ItemsPanel>
                 <ItemsControl.ItemTemplate>
@@ -99,12 +97,11 @@
                     Grid.ColumnSpan="2"
                     HorizontalAlignment="Center"
                     VerticalAlignment="Center"
-                    Panel.ZIndex="1">
+                    Panel.ZIndex="1"
+                    ItemsSource="{Binding Visitors}">
                     <ItemsControl.ItemsPanel>
                         <ItemsPanelTemplate>
-                            <UniformGrid
-                                Columns="{Binding PlayerColumns}"
-                                Rows="{Binding PlayerRows}" />
+                            <UniformGrid />
                         </ItemsPanelTemplate>
                     </ItemsControl.ItemsPanel>
                     <ItemsControl.ItemTemplate>
@@ -163,12 +160,11 @@
                     Grid.RowSpan="2"
                     HorizontalAlignment="Center"
                     VerticalAlignment="Center"
-                    Panel.ZIndex="1">
+                    Panel.ZIndex="1"
+                    ItemsSource="{Binding Visitors}">
                     <ItemsControl.ItemsPanel>
                         <ItemsPanelTemplate>
-                            <UniformGrid
-                                Columns="{Binding PlayerColumns}"
-                                Rows="{Binding PlayerRows}" />
+                            <UniformGrid />
                         </ItemsPanelTemplate>
                     </ItemsControl.ItemsPanel>
                     <ItemsControl.ItemTemplate>
@@ -227,12 +223,11 @@
                     Grid.RowSpan="2"
                     HorizontalAlignment="Center"
                     VerticalAlignment="Center"
-                    Panel.ZIndex="1">
+                    Panel.ZIndex="1"
+                    ItemsSource="{Binding Visitors}">
                     <ItemsControl.ItemsPanel>
                         <ItemsPanelTemplate>
-                            <UniformGrid
-                                Columns="{Binding PlayerColumns}"
-                                Rows="{Binding PlayerRows}" />
+                            <UniformGrid />
                         </ItemsPanelTemplate>
                     </ItemsControl.ItemsPanel>
                     <ItemsControl.ItemTemplate>
@@ -291,12 +286,11 @@
                     Grid.ColumnSpan="2"
                     HorizontalAlignment="Center"
                     VerticalAlignment="Center"
-                    Panel.ZIndex="1">
+                    Panel.ZIndex="1"
+                    ItemsSource="{Binding Visitors}">
                     <ItemsControl.ItemsPanel>
                         <ItemsPanelTemplate>
-                            <UniformGrid
-                                Columns="{Binding PlayerColumns}"
-                                Rows="{Binding PlayerRows}" />
+                            <UniformGrid />
                         </ItemsPanelTemplate>
                     </ItemsControl.ItemsPanel>
                     <ItemsControl.ItemTemplate>
@@ -343,5 +337,116 @@
         NorthCellTemplate="{StaticResource NorthCellTemplate}"
         SouthCellTemplate="{StaticResource SouthCellTemplate}"
         WestCellTemplate="{StaticResource WestCellTemplate}" />
+
+    <Style
+        x:Key="BottomBarStyle"
+        TargetType="{x:Type StackPanel}">
+        <Setter
+            Property="Orientation"
+            Value="Horizontal" />
+    </Style>
+
+    <Style
+        x:Key="InformationBorderStyle"
+        TargetType="{x:Type Border}">
+        <Setter
+            Property="VerticalAlignment"
+            Value="Center" />
+    </Style>
+
+    <Style
+        x:Key="InformationTextStyle"
+        TargetType="{x:Type TextBlock}">
+        <Setter
+            Property="FontSize"
+            Value="14" />
+        <Setter
+            Property="FontWeight"
+            Value="SemiBold" />
+    </Style>
+
+    <Style
+        x:Key="CurrentPlayerBorderStyle"
+        TargetType="{x:Type Border}">
+        <Setter
+            Property="Width"
+            Value="20" />
+        <Setter
+            Property="Height"
+            Value="20" />
+        <Setter
+            Property="BorderThickness"
+            Value="2" />
+        <Setter
+            Property="BorderBrush"
+            Value="Black" />
+        <Setter
+            Property="VerticalAlignment"
+            Value="Center" />
+        <Setter
+            Property="Background"
+            Value="{Binding CurrentPlayerColor}" />
+        <Setter
+            Property="Margin"
+            Value="3" />
+    </Style>
+
+    <Style
+        x:Key="ThrowDiceButtonStyle"
+        TargetType="{x:Type Button}">
+        <Setter
+            Property="FontSize"
+            Value="10" />
+        <Setter
+            Property="FontWeight"
+            Value="Normal" />
+        <Setter
+            Property="Width"
+            Value="80" />
+        <Setter
+            Property="Height"
+            Value="20" />
+        <Setter
+            Property="VerticalAlignment"
+            Value="Center" />
+        <Setter
+            Property="Cursor"
+            Value="Hand" />
+        <Setter
+            Property="Margin"
+            Value="3" />
+    </Style>
+
+    <Style
+        x:Key="DiceBorderStyle"
+        BasedOn="{StaticResource InformationBorderStyle}"
+        TargetType="{x:Type Border}">
+        <Setter
+            Property="Width"
+            Value="20" />
+        <Setter
+            Property="Height"
+            Value="20" />
+        <Setter
+            Property="BorderThickness"
+            Value="2" />
+        <Setter
+            Property="BorderBrush"
+            Value="Black" />
+        <Setter
+            Property="Margin"
+            Value="3" />
+    </Style>
+
+    <Style
+        x:Key="DiceTextStyle"
+        TargetType="{x:Type TextBlock}">
+        <Setter
+            Property="VerticalAlignment"
+            Value="Center" />
+        <Setter
+            Property="HorizontalAlignment"
+            Value="Center" />
+    </Style>
 
 </ResourceDictionary>

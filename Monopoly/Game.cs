@@ -6,12 +6,30 @@ namespace Monopoly
 {
     public class Game
     {
+        #region Fields
+
         private List<Titles.TitleDeed> titleDeeds;
         private List<Cards.CommunityChest> communityChest;
         private List<Cards.Chance> chance;
         private List<VM.Player> players;
         private int hotels;
         private int houses;
+        private VM.Player currentPlayer;
+        private int firstDie;
+        private int secondDie;
+        private int currentPlayerIndex;
+
+        #endregion
+
+        #region Events
+
+        public delegate void DiceThrownHandler(object sender, Events.DiceThrownArgs args);
+
+        public event DiceThrownHandler DiceThrown;
+
+        #endregion
+
+        #region Constructors
 
         public Game()
         {
@@ -105,6 +123,8 @@ namespace Monopoly
             hotels = GameConstants.TotalHotels;
             houses = GameConstants.TotalHouses;
         }
+
+        #endregion
 
         #region Rules
 
@@ -250,6 +270,8 @@ namespace Monopoly
 
         #endregion
 
+        #region Infrastructure
+
         public void Start(int players)
         {
             if (players < GameConstants.MinimumPlayers || players > GameConstants.MaximumPlayers) throw new MonopolyException($"Invalid players count {players}");
@@ -283,8 +305,34 @@ namespace Monopoly
             }
 
             Board.Init(CurrentPlayers);
+            currentPlayerIndex = 0;
+            currentPlayer = CurrentPlayers[currentPlayerIndex];
 
             Running = true;
+        }
+
+        public void ThrowDice()
+        {
+            if (!Running) return;
+
+            Random random = new Random();
+            firstDie = random.Next(GameConstants.MaximumDiceValue) + 1;
+            secondDie = random.Next(GameConstants.MaximumDiceValue) + 1;
+            var space = Board.Spaces.FirstOrDefault(x => x.Visitors.Contains(currentPlayer));
+
+            if (space == null) throw new MonopolyException($"Player '{currentPlayer.Name}' wasn't found at board.");
+
+            space.Visitors.Remove(currentPlayer);
+            var spaceIndex = Board.Spaces.IndexOf(space);
+            spaceIndex += firstDie + secondDie;
+
+            if (spaceIndex >= Board.Spaces.Count()) spaceIndex %= Board.Spaces.Count();
+
+            Board.Spaces[spaceIndex].Visitors.Add(currentPlayer);
+            currentPlayerIndex = (currentPlayerIndex + 1) % CurrentPlayers.Count;
+            currentPlayer = CurrentPlayers[currentPlayerIndex];
+
+            DiceThrown?.Invoke(this, new Events.DiceThrownArgs { CurrentPlayer = currentPlayer, FirstDie = firstDie, SecondDie = secondDie });
         }
 
 #if DEBUG
@@ -300,10 +348,16 @@ namespace Monopoly
         }
 #endif
 
+        #endregion
+
+        #region Properties
+
         public Board Board { get; }
 
         public List<VM.Player> CurrentPlayers { get; }
 
         public bool Running { get; private set; }
+
+        #endregion
     }
 }

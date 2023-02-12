@@ -6,5 +6,6 @@
         public static readonly int MaximumPlayers = 8;
         public const int TotalHotels = 12;
         public const int TotalHouses = 32;
+        public const int MaximumDiceValue = 6;
     }
 }

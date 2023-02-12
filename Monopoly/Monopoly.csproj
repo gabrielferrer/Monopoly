@@ -57,6 +57,7 @@
     </ApplicationDefinition>
     <Compile Include="Cards\ChanceTexts.cs" />
     <Compile Include="Cards\CommunityChestTexts.cs" />
+    <Compile Include="Events\DiceThrownArgs.cs" />
     <Compile Include="GameConstants.cs" />
     <Compile Include="MarkupExtensions.cs" />
     <Compile Include="MonopolyException.cs" />

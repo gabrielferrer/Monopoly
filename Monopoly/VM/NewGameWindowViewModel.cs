@@ -1,5 +1,6 @@
 ﻿using System.Windows;
 using System.Windows.Input;
+using System.Windows.Media;
 
 namespace Monopoly.VM
 {
@@ -45,6 +46,8 @@ namespace Monopoly.VM
         #endregion
 
         #region Properties
+
+        public Brush WindowColor => new SolidColorBrush(UI.Constants.BoardColor);
 
         private bool CanAccept => true;
 

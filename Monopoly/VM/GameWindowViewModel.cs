@@ -1,5 +1,5 @@
-﻿using System.Collections.ObjectModel;
-using System.Linq;
+﻿using Monopoly.Events;
+using System.Collections.ObjectModel;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Media;
@@ -14,6 +14,9 @@ namespace Monopoly.VM
         private double[] rowDefinitions;
         private double[] columnDefinitions;
         private int players;
+        private Brush currentPlayerColor;
+        private int firstDie;
+        private int secondDie;
 
         #endregion
 
@@ -23,6 +26,7 @@ namespace Monopoly.VM
         {
             NewGameCommand = new RelayCommand(param => CanStartNewGame, param => NewGameParameters());
             ExitCommand = new RelayCommand(param => CanExit(), param => Exit());
+            ThrowDiceCommand = new RelayCommand(param => ThrowDice());
 
             rowDefinitions = new double[UI.Constants.BoardRows];
             columnDefinitions = new double[UI.Constants.BoardColumns];
@@ -31,6 +35,7 @@ namespace Monopoly.VM
             for (int column = 0; column < UI.Constants.BoardColumns; column++) columnDefinitions[column] = double.NaN;
 
             game = new Game();
+            game.DiceThrown += OnDiceThrown;
 #if DEBUG
             //using (var stream = new System.IO.StreamWriter(@"C:\Users\Gabriel\Desktop\log.txt"))
             //{
@@ -46,9 +51,16 @@ namespace Monopoly.VM
             window.Show();
         }
 
-        private void OnNewGame(object sender, Events.NewGameArgs args)
+        private void OnNewGame(object sender, NewGameArgs args)
         {
             game.Start(args.Players);
+        }
+
+        private void OnDiceThrown(object sender, DiceThrownArgs args)
+        {
+            CurrentPlayerColor = args.CurrentPlayer.PlayerColor;
+            FirstDie = args.FirstDie;
+            SecondDie = args.SecondDie;
         }
 
         private bool CanExit()
@@ -65,6 +77,11 @@ namespace Monopoly.VM
         private void Exit()
         {
             Application.Current.Shutdown();
+        }
+
+        private void ThrowDice()
+        {
+            game.ThrowDice();
         }
 
         #endregion
@@ -89,6 +106,48 @@ namespace Monopoly.VM
 
         public ObservableCollection<Spaces.Space> Spaces => game.Board.Spaces;
 
+        public Brush CurrentPlayerColor
+        {
+            get
+            {
+                return currentPlayerColor;
+            }
+            set
+            {
+                if (currentPlayerColor == value) return;
+                currentPlayerColor = value;
+                OnPropertyChanged(nameof(CurrentPlayerColor));
+            }
+        }
+
+        public int FirstDie
+        {
+            get
+            {
+                return firstDie;
+            }
+            set
+            {
+                if (firstDie == value) return;
+                firstDie = value;
+                OnPropertyChanged(nameof(FirstDie));
+            }
+        }
+
+        public int SecondDie
+        {
+            get
+            {
+                return secondDie;
+            }
+            set
+            {
+                if (secondDie == value) return;
+                secondDie = value;
+                OnPropertyChanged(nameof(SecondDie));
+            }
+        }
+
         public int Players
         {
             get
@@ -110,6 +169,8 @@ namespace Monopoly.VM
         public ICommand NewGameCommand { get; }
 
         public ICommand ExitCommand { get; }
+
+        public ICommand ThrowDiceCommand { get; }
 
         #endregion
     }

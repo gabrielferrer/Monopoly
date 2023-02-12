@@ -14,9 +14,16 @@
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Window.Resources>
-    <DockPanel>
-        <Menu
-            DockPanel.Dock="Top">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition
+                Height="Auto" />
+            <RowDefinition
+                Height="*" />
+            <RowDefinition
+                Height="Auto" />
+        </Grid.RowDefinitions>
+        <Menu>
             <MenuItem
                 Header="File">
                 <MenuItem
@@ -29,6 +36,7 @@
             </MenuItem>
         </Menu>
         <ScrollViewer
+            Grid.Row="1"
             HorizontalScrollBarVisibility="Auto">
             <ItemsControl
                 ItemTemplateSelector="{StaticResource BoardCellTemplateSelector}"
@@ -59,5 +67,39 @@
                 </ItemsControl.ItemContainerStyle>
             </ItemsControl>
         </ScrollViewer>
-    </DockPanel>
+        <StackPanel
+            Grid.Row="2"
+            Style="{StaticResource BottomBarStyle}">
+            <Border
+                Style="{StaticResource InformationBorderStyle}">
+                <TextBlock
+                    Style="{StaticResource InformationTextStyle}"
+                    Text="Current Player:" />
+            </Border>
+            <Border
+                Style="{StaticResource CurrentPlayerBorderStyle}" />
+            <Button
+                Command="{Binding ThrowDiceCommand}"
+                Content="Throw Dice"
+                Style="{StaticResource ThrowDiceButtonStyle}" />
+            <Border
+                Style="{StaticResource InformationBorderStyle}">
+                <TextBlock
+                    Style="{StaticResource InformationTextStyle}"
+                    Text="Dice:" />
+            </Border>
+            <Border
+                Style="{StaticResource DiceBorderStyle}">
+                <TextBlock
+                    Style="{StaticResource DiceTextStyle}"
+                    Text="{Binding FirstDie}" />
+            </Border>
+            <Border
+                Style="{StaticResource DiceBorderStyle}">
+                <TextBlock
+                    Style="{StaticResource DiceTextStyle}"
+                    Text="{Binding SecondDie}" />
+            </Border>
+        </StackPanel>
+    </Grid>
 </Window>
