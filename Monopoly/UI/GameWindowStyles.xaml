@@ -355,6 +355,15 @@
     </Style>
 
     <Style
+        x:Key="PlayerDataBorderStyle"
+        BasedOn="{StaticResource InformationBorderStyle}"
+        TargetType="{x:Type Border}">
+        <Setter
+            Property="Margin"
+            Value="3,0" />
+    </Style>
+
+    <Style
         x:Key="InformationTextStyle"
         TargetType="{x:Type TextBlock}">
         <Setter
@@ -384,11 +393,19 @@
             Property="VerticalAlignment"
             Value="Center" />
         <Setter
-            Property="Background"
-            Value="{Binding CurrentPlayerColor}" />
-        <Setter
             Property="Margin"
             Value="3" />
+    </Style>
+
+    <Style
+        x:Key="MoneyTextStyle"
+        TargetType="{x:Type TextBlock}">
+        <Setter
+            Property="FontSize"
+            Value="14" />
+        <Setter
+            Property="FontWeight"
+            Value="Bold" />
     </Style>
 
     <Style

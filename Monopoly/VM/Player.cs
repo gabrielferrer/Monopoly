@@ -1,20 +1,15 @@
-﻿using System.Windows.Media;
+﻿using System.Collections.ObjectModel;
+using System.Windows.Media;
 
 namespace Monopoly.VM
 {
     public class Player : ViewModelBase
     {
-        private int money;
-
         public Player(string name, Color color)
         {
             Name = name;
             PlayerColor = new SolidColorBrush(color);
-        }
-
-        public void Clear()
-        {
-            money = 0;
+            TitleDeeds = new ObservableCollection<Titles.TitleDeed>();
         }
 
         public static bool operator == (Player a, Player b)
@@ -42,10 +37,14 @@ namespace Monopoly.VM
         {
             stream.WriteLine(nameof(Player));
             stream.WriteLine($"Name: {Name}");
-            stream.WriteLine($"Money: {money}");
+            stream.WriteLine($"Money: {Money}");
         }
 #endif
         public string Name { get; }
+
+        public int Money { get; set; }
+
+        public ObservableCollection<Titles.TitleDeed> TitleDeeds { get; }
 
         public double PlayerWidth => UI.Constants.PlayerSize;
 

@@ -11,6 +11,11 @@ namespace Monopoly.VM.Spaces
             this.percentage = percentage;
         }
 
+        public override void Check(Player player)
+        {
+            // TODO: ask player for percentage or fix tax.
+        }
+
         public override IEnumerable<string> Text => new[] { "Income Tax", $"(Pay {percentage}% or ${value})" };
     }
 }

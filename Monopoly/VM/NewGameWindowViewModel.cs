@@ -63,7 +63,7 @@ namespace Monopoly.VM
             {
                 if (players == value) return;
                 players = value;
-                OnPropertyChanged(nameof(Players));
+                OnPropertyChanged();
             }
         }
 

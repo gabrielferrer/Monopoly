@@ -19,6 +19,8 @@ namespace Monopoly.VM.Spaces
             StripeColor = spaceDto.StripeColor.HasValue ? new SolidColorBrush(spaceDto.StripeColor.Value) : null;
         }
 
+        public abstract void Check(Player player);
+
         public void Clear()
         {
             Visitors.Clear();

@@ -13,7 +13,8 @@ namespace Monopoly.VM
         private Game game;
         private double[] rowDefinitions;
         private double[] columnDefinitions;
-        private int players;
+        private string currentPlayerName;
+        private int currentPlayerMoney;
         private Brush currentPlayerColor;
         private int firstDie;
         private int secondDie;
@@ -36,6 +37,7 @@ namespace Monopoly.VM
 
             game = new Game();
             game.DiceThrown += OnDiceThrown;
+            game.CurrentPlayerChanged += OnCurrentPlayerChanged;
 #if DEBUG
             //using (var stream = new System.IO.StreamWriter(@"C:\Users\Gabriel\Desktop\log.txt"))
             //{
@@ -58,9 +60,15 @@ namespace Monopoly.VM
 
         private void OnDiceThrown(object sender, DiceThrownArgs args)
         {
-            CurrentPlayerColor = args.CurrentPlayer.PlayerColor;
             FirstDie = args.FirstDie;
             SecondDie = args.SecondDie;
+        }
+
+        private void OnCurrentPlayerChanged(object sender, CurrentPlayerChangedArgs args)
+        {
+            CurrentPlayerName = args.CurrentPlayer.Name;
+            CurrentPlayerMoney = args.CurrentPlayer.Money;
+            CurrentPlayerColor = args.CurrentPlayer.PlayerColor;
         }
 
         private bool CanExit()
@@ -92,10 +100,6 @@ namespace Monopoly.VM
 
         public Brush WindowColor => new SolidColorBrush(UI.Constants.BoardColor);
 
-        public double WindowWidth => columnDefinitions.Length * UI.Constants.BoardCellWidth + (columnDefinitions.Length + 1 * UI.Constants.BoardCellBorderThickness);
-
-        public double WindowHeight => rowDefinitions.Length * UI.Constants.BoardCellHeight + (rowDefinitions.Length + 1 * UI.Constants.BoardCellBorderThickness);
-
         public ObservableCollection<double> RowDefinitions => new ObservableCollection<double>(rowDefinitions);
 
         public ObservableCollection<double> ColumnDefinitions => new ObservableCollection<double>(columnDefinitions);
@@ -104,7 +108,35 @@ namespace Monopoly.VM
 
         public int Columns => columnDefinitions.Length;
 
-        public ObservableCollection<Spaces.Space> Spaces => game.Board.Spaces;
+        public ObservableCollection<Spaces.Space> Spaces => game.Spaces;
+
+        public string CurrentPlayerName
+        {
+            get
+            {
+                return currentPlayerName;
+            }
+            set
+            {
+                if (currentPlayerName == value) return;
+                currentPlayerName = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public int CurrentPlayerMoney
+        {
+            get
+            {
+                return currentPlayerMoney;
+            }
+            set
+            {
+                if (currentPlayerMoney == value) return;
+                currentPlayerMoney = value;
+                OnPropertyChanged();
+            }
+        }
 
         public Brush CurrentPlayerColor
         {
@@ -116,7 +148,7 @@ namespace Monopoly.VM
             {
                 if (currentPlayerColor == value) return;
                 currentPlayerColor = value;
-                OnPropertyChanged(nameof(CurrentPlayerColor));
+                OnPropertyChanged();
             }
         }
 
@@ -130,7 +162,7 @@ namespace Monopoly.VM
             {
                 if (firstDie == value) return;
                 firstDie = value;
-                OnPropertyChanged(nameof(FirstDie));
+                OnPropertyChanged();
             }
         }
 
@@ -144,21 +176,7 @@ namespace Monopoly.VM
             {
                 if (secondDie == value) return;
                 secondDie = value;
-                OnPropertyChanged(nameof(SecondDie));
-            }
-        }
-
-        public int Players
-        {
-            get
-            {
-                return players;
-            }
-            set
-            {
-                if (players == value) return;
-                players = value;
-                OnPropertyChanged(nameof(Players));
+                OnPropertyChanged();
             }
         }
 

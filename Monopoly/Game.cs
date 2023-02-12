@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
+using System.Windows;
 
 namespace Monopoly
 {
@@ -24,8 +26,10 @@ namespace Monopoly
         #region Events
 
         public delegate void DiceThrownHandler(object sender, Events.DiceThrownArgs args);
+        public delegate void CurrentPlayerChangedHandler(object sender, Events.CurrentPlayerChangedArgs args);
 
         public event DiceThrownHandler DiceThrown;
+        public event CurrentPlayerChangedHandler CurrentPlayerChanged;
 
         #endregion
 
@@ -119,7 +123,49 @@ namespace Monopoly
             titleDeeds.Add(new Titles.Street(PropertyNames.ParkPlace, 350, 35, 175, new[] { 175, 500, 1100, 1300 }, 1500, 200, 200));
             titleDeeds.Add(new Titles.Street(PropertyNames.Boardwalk, 400, 50, 200, new[] { 200, 600, 1400, 1700 }, 2000, 200, 200));
 
-            Board = new Board(titleDeeds);
+            Spaces = new ObservableCollection<VM.Spaces.Space>();
+
+            Spaces.Add(new VM.Spaces.Go(GameConstants.Salary, new VM.Spaces.SpaceDto { Row = 10, Column = 10, RowSpan = 1, ColumnSpan = 1, Border = new Thickness(UI.Constants.BoardCellBorderThickness), Orientation = UI.BoardCellOrientation.SouthEast, StripeColor = null }));
+            Spaces.Add(new VM.Spaces.Street(titleDeeds.First(x => x.Name == PropertyNames.MediterraneanAvenue), new VM.Spaces.SpaceDto { Row = 10, Column = 9, RowSpan = 1, ColumnSpan = 1, Border = new Thickness(0, UI.Constants.BoardCellBorderThickness, 0, UI.Constants.BoardCellBorderThickness), Orientation = UI.BoardCellOrientation.South, StripeColor = UI.PropertyColors.FirstGroup }));
+            Spaces.Add(new VM.Spaces.CommunityChest(new VM.Spaces.SpaceDto { Row = 10, Column = 8, RowSpan = 1, ColumnSpan = 1, Border = new Thickness(0, UI.Constants.BoardCellBorderThickness, UI.Constants.BoardCellBorderThickness, UI.Constants.BoardCellBorderThickness), Orientation = UI.BoardCellOrientation.South, StripeColor = null }));
+            Spaces.Add(new VM.Spaces.Street(titleDeeds.First(x => x.Name == PropertyNames.BalticAvenue), new VM.Spaces.SpaceDto { Row = 10, Column = 7, RowSpan = 1, ColumnSpan = 1, Border = new Thickness(0, UI.Constants.BoardCellBorderThickness, UI.Constants.BoardCellBorderThickness, UI.Constants.BoardCellBorderThickness), Orientation = UI.BoardCellOrientation.South, StripeColor = UI.PropertyColors.FirstGroup }));
+            Spaces.Add(new VM.Spaces.IncommeTax(GameConstants.IncommeTaxPercentage, GameConstants.IncommeTax, new VM.Spaces.SpaceDto { Row = 10, Column = 6, RowSpan = 1, ColumnSpan = 1, Border = new Thickness(0, UI.Constants.BoardCellBorderThickness, UI.Constants.BoardCellBorderThickness, UI.Constants.BoardCellBorderThickness), Orientation = UI.BoardCellOrientation.South, StripeColor = null }));
+            Spaces.Add(new VM.Spaces.Railroad(titleDeeds.First(x => x.Name == PropertyNames.ReadingRailroad), new VM.Spaces.SpaceDto { Row = 10, Column = 5, RowSpan = 1, ColumnSpan = 1, Border = new Thickness(0, UI.Constants.BoardCellBorderThickness, UI.Constants.BoardCellBorderThickness, UI.Constants.BoardCellBorderThickness), Orientation = UI.BoardCellOrientation.South, StripeColor = null }));
+            Spaces.Add(new VM.Spaces.Street(titleDeeds.First(x => x.Name == PropertyNames.OrientalAvenue), new VM.Spaces.SpaceDto { Row = 10, Column = 4, RowSpan = 1, ColumnSpan = 1, Border = new Thickness(0, UI.Constants.BoardCellBorderThickness, UI.Constants.BoardCellBorderThickness, UI.Constants.BoardCellBorderThickness), Orientation = UI.BoardCellOrientation.South, StripeColor = UI.PropertyColors.SecondGroup }));
+            Spaces.Add(new VM.Spaces.Chance(new VM.Spaces.SpaceDto { Row = 10, Column = 3, RowSpan = 1, ColumnSpan = 1, Border = new Thickness(0, UI.Constants.BoardCellBorderThickness, UI.Constants.BoardCellBorderThickness, UI.Constants.BoardCellBorderThickness), Orientation = UI.BoardCellOrientation.South, StripeColor = null }));
+            Spaces.Add(new VM.Spaces.Street(titleDeeds.First(x => x.Name == PropertyNames.VermontAvenue), new VM.Spaces.SpaceDto { Row = 10, Column = 2, RowSpan = 1, ColumnSpan = 1, Border = new Thickness(0, UI.Constants.BoardCellBorderThickness, UI.Constants.BoardCellBorderThickness, UI.Constants.BoardCellBorderThickness), Orientation = UI.BoardCellOrientation.South, StripeColor = UI.PropertyColors.SecondGroup }));
+            Spaces.Add(new VM.Spaces.Street(titleDeeds.First(x => x.Name == PropertyNames.ConnecticutAvenue), new VM.Spaces.SpaceDto { Row = 10, Column = 1, RowSpan = 1, ColumnSpan = 1, Border = new Thickness(0, UI.Constants.BoardCellBorderThickness, UI.Constants.BoardCellBorderThickness, UI.Constants.BoardCellBorderThickness), Orientation = UI.BoardCellOrientation.South, StripeColor = UI.PropertyColors.SecondGroup }));
+            Spaces.Add(new VM.Spaces.Jail(new VM.Spaces.SpaceDto { Row = 10, Column = 0, RowSpan = 1, ColumnSpan = 1, Border = new Thickness(UI.Constants.BoardCellBorderThickness), Orientation = UI.BoardCellOrientation.SouthWest, StripeColor = null }));
+            Spaces.Add(new VM.Spaces.Street(titleDeeds.First(x => x.Name == PropertyNames.StCharlesPlace), new VM.Spaces.SpaceDto { Row = 9, Column = 0, RowSpan = 1, ColumnSpan = 1, Border = new Thickness(UI.Constants.BoardCellBorderThickness, 0, UI.Constants.BoardCellBorderThickness, 0), Orientation = UI.BoardCellOrientation.West, StripeColor = UI.PropertyColors.ThirdGroup }));
+            Spaces.Add(new VM.Spaces.Utility(titleDeeds.First(x => x.Name == PropertyNames.ElectricCompany), new VM.Spaces.SpaceDto { Row = 8, Column = 0, RowSpan = 1, ColumnSpan = 1, Border = new Thickness(UI.Constants.BoardCellBorderThickness, 0, UI.Constants.BoardCellBorderThickness, UI.Constants.BoardCellBorderThickness), Orientation = UI.BoardCellOrientation.West, StripeColor = null }));
+            Spaces.Add(new VM.Spaces.Street(titleDeeds.First(x => x.Name == PropertyNames.StatesAvenue), new VM.Spaces.SpaceDto { Row = 7, Column = 0, RowSpan = 1, ColumnSpan = 1, Border = new Thickness(UI.Constants.BoardCellBorderThickness, 0, UI.Constants.BoardCellBorderThickness, UI.Constants.BoardCellBorderThickness), Orientation = UI.BoardCellOrientation.West, StripeColor = UI.PropertyColors.ThirdGroup }));
+            Spaces.Add(new VM.Spaces.Street(titleDeeds.First(x => x.Name == PropertyNames.VirginiaAvenue), new VM.Spaces.SpaceDto { Row = 6, Column = 0, RowSpan = 1, ColumnSpan = 1, Border = new Thickness(UI.Constants.BoardCellBorderThickness, 0, UI.Constants.BoardCellBorderThickness, UI.Constants.BoardCellBorderThickness), Orientation = UI.BoardCellOrientation.West, StripeColor = UI.PropertyColors.ThirdGroup }));
+            Spaces.Add(new VM.Spaces.Railroad(titleDeeds.First(x => x.Name == PropertyNames.PennsylvaniaRailroad), new VM.Spaces.SpaceDto { Row = 5, Column = 0, RowSpan = 1, ColumnSpan = 1, Border = new Thickness(UI.Constants.BoardCellBorderThickness, 0, UI.Constants.BoardCellBorderThickness, UI.Constants.BoardCellBorderThickness), Orientation = UI.BoardCellOrientation.West, StripeColor = null }));
+            Spaces.Add(new VM.Spaces.Street(titleDeeds.First(x => x.Name == PropertyNames.StJamesPlace), new VM.Spaces.SpaceDto { Row = 4, Column = 0, RowSpan = 1, ColumnSpan = 1, Border = new Thickness(UI.Constants.BoardCellBorderThickness, 0, UI.Constants.BoardCellBorderThickness, UI.Constants.BoardCellBorderThickness), Orientation = UI.BoardCellOrientation.West, StripeColor = UI.PropertyColors.FourthGroup }));
+            Spaces.Add(new VM.Spaces.CommunityChest(new VM.Spaces.SpaceDto { Row = 3, Column = 0, RowSpan = 1, ColumnSpan = 1, Border = new Thickness(UI.Constants.BoardCellBorderThickness, 0, UI.Constants.BoardCellBorderThickness, UI.Constants.BoardCellBorderThickness), Orientation = UI.BoardCellOrientation.West, StripeColor = null }));
+            Spaces.Add(new VM.Spaces.Street(titleDeeds.First(x => x.Name == PropertyNames.TennesseeAvenue), new VM.Spaces.SpaceDto { Row = 2, Column = 0, RowSpan = 1, ColumnSpan = 1, Border = new Thickness(UI.Constants.BoardCellBorderThickness, 0, UI.Constants.BoardCellBorderThickness, UI.Constants.BoardCellBorderThickness), Orientation = UI.BoardCellOrientation.West, StripeColor = UI.PropertyColors.FourthGroup }));
+            Spaces.Add(new VM.Spaces.Street(titleDeeds.First(x => x.Name == PropertyNames.NewYorkAvenue), new VM.Spaces.SpaceDto { Row = 1, Column = 0, RowSpan = 1, ColumnSpan = 1, Border = new Thickness(UI.Constants.BoardCellBorderThickness, 0, UI.Constants.BoardCellBorderThickness, UI.Constants.BoardCellBorderThickness), Orientation = UI.BoardCellOrientation.West, StripeColor = UI.PropertyColors.FourthGroup }));
+            Spaces.Add(new VM.Spaces.Parking(new VM.Spaces.SpaceDto { Row = 0, Column = 0, RowSpan = 1, ColumnSpan = 1, Border = new Thickness(UI.Constants.BoardCellBorderThickness), Orientation = UI.BoardCellOrientation.NorthWest, StripeColor = null }));
+            Spaces.Add(new VM.Spaces.Street(titleDeeds.First(x => x.Name == PropertyNames.KentuckyAvenue), new VM.Spaces.SpaceDto { Row = 0, Column = 1, RowSpan = 1, ColumnSpan = 1, Border = new Thickness(0, UI.Constants.BoardCellBorderThickness, UI.Constants.BoardCellBorderThickness, UI.Constants.BoardCellBorderThickness), Orientation = UI.BoardCellOrientation.North, StripeColor = UI.PropertyColors.FifthGroup }));
+            Spaces.Add(new VM.Spaces.Chance(new VM.Spaces.SpaceDto { Row = 0, Column = 2, RowSpan = 1, ColumnSpan = 1, Border = new Thickness(0, UI.Constants.BoardCellBorderThickness, UI.Constants.BoardCellBorderThickness, UI.Constants.BoardCellBorderThickness), Orientation = UI.BoardCellOrientation.North, StripeColor = null }));
+            Spaces.Add(new VM.Spaces.Street(titleDeeds.First(x => x.Name == PropertyNames.IndianaAvenue), new VM.Spaces.SpaceDto { Row = 0, Column = 3, RowSpan = 1, ColumnSpan = 1, Border = new Thickness(0, UI.Constants.BoardCellBorderThickness, UI.Constants.BoardCellBorderThickness, UI.Constants.BoardCellBorderThickness), Orientation = UI.BoardCellOrientation.North, StripeColor = UI.PropertyColors.FifthGroup }));
+            Spaces.Add(new VM.Spaces.Street(titleDeeds.First(x => x.Name == PropertyNames.IllinoisAvenue), new VM.Spaces.SpaceDto { Row = 0, Column = 4, RowSpan = 1, ColumnSpan = 1, Border = new Thickness(0, UI.Constants.BoardCellBorderThickness, UI.Constants.BoardCellBorderThickness, UI.Constants.BoardCellBorderThickness), Orientation = UI.BoardCellOrientation.North, StripeColor = UI.PropertyColors.FifthGroup }));
+            Spaces.Add(new VM.Spaces.Railroad(titleDeeds.First(x => x.Name == PropertyNames.BnORailroad), new VM.Spaces.SpaceDto { Row = 0, Column = 5, RowSpan = 1, ColumnSpan = 1, Border = new Thickness(0, UI.Constants.BoardCellBorderThickness, UI.Constants.BoardCellBorderThickness, UI.Constants.BoardCellBorderThickness), Orientation = UI.BoardCellOrientation.North, StripeColor = null }));
+            Spaces.Add(new VM.Spaces.Street(titleDeeds.First(x => x.Name == PropertyNames.AtlanticAvenue), new VM.Spaces.SpaceDto { Row = 0, Column = 6, RowSpan = 1, ColumnSpan = 1, Border = new Thickness(0, UI.Constants.BoardCellBorderThickness, UI.Constants.BoardCellBorderThickness, UI.Constants.BoardCellBorderThickness), Orientation = UI.BoardCellOrientation.North, StripeColor = UI.PropertyColors.SixthGroup }));
+            Spaces.Add(new VM.Spaces.Street(titleDeeds.First(x => x.Name == PropertyNames.VentnorAvenue), new VM.Spaces.SpaceDto { Row = 0, Column = 7, RowSpan = 1, ColumnSpan = 1, Border = new Thickness(0, UI.Constants.BoardCellBorderThickness, UI.Constants.BoardCellBorderThickness, UI.Constants.BoardCellBorderThickness), Orientation = UI.BoardCellOrientation.North, StripeColor = UI.PropertyColors.SixthGroup }));
+            Spaces.Add(new VM.Spaces.Utility(titleDeeds.First(x => x.Name == PropertyNames.WaterWorks), new VM.Spaces.SpaceDto { Row = 0, Column = 8, RowSpan = 1, ColumnSpan = 1, Border = new Thickness(0, UI.Constants.BoardCellBorderThickness, UI.Constants.BoardCellBorderThickness, UI.Constants.BoardCellBorderThickness), Orientation = UI.BoardCellOrientation.North, StripeColor = null }));
+            Spaces.Add(new VM.Spaces.Street(titleDeeds.First(x => x.Name == PropertyNames.MarvinGardens), new VM.Spaces.SpaceDto { Row = 0, Column = 9, RowSpan = 1, ColumnSpan = 1, Border = new Thickness(0, UI.Constants.BoardCellBorderThickness, 0, UI.Constants.BoardCellBorderThickness), Orientation = UI.BoardCellOrientation.North, StripeColor = UI.PropertyColors.SixthGroup }));
+            Spaces.Add(new VM.Spaces.GoToJail(new VM.Spaces.SpaceDto { Row = 0, Column = 10, RowSpan = 1, ColumnSpan = 1, Border = new Thickness(UI.Constants.BoardCellBorderThickness), Orientation = UI.BoardCellOrientation.NorthEast, StripeColor = null }));
+            Spaces.Add(new VM.Spaces.Street(titleDeeds.First(x => x.Name == PropertyNames.PacificAvenue), new VM.Spaces.SpaceDto { Row = 1, Column = 10, RowSpan = 1, ColumnSpan = 1, Border = new Thickness(UI.Constants.BoardCellBorderThickness, 0, UI.Constants.BoardCellBorderThickness, UI.Constants.BoardCellBorderThickness), Orientation = UI.BoardCellOrientation.East, StripeColor = UI.PropertyColors.SeventhGroup }));
+            Spaces.Add(new VM.Spaces.Street(titleDeeds.First(x => x.Name == PropertyNames.NorthCarolinaAvenue), new VM.Spaces.SpaceDto { Row = 2, Column = 10, RowSpan = 1, ColumnSpan = 1, Border = new Thickness(UI.Constants.BoardCellBorderThickness, 0, UI.Constants.BoardCellBorderThickness, UI.Constants.BoardCellBorderThickness), Orientation = UI.BoardCellOrientation.East, StripeColor = UI.PropertyColors.SeventhGroup }));
+            Spaces.Add(new VM.Spaces.CommunityChest(new VM.Spaces.SpaceDto { Row = 3, Column = 10, RowSpan = 1, ColumnSpan = 1, Border = new Thickness(UI.Constants.BoardCellBorderThickness, 0, UI.Constants.BoardCellBorderThickness, UI.Constants.BoardCellBorderThickness), Orientation = UI.BoardCellOrientation.East, StripeColor = null }));
+            Spaces.Add(new VM.Spaces.Street(titleDeeds.First(x => x.Name == PropertyNames.PennsylvaniaAvenue), new VM.Spaces.SpaceDto { Row = 4, Column = 10, RowSpan = 1, ColumnSpan = 1, Border = new Thickness(UI.Constants.BoardCellBorderThickness, 0, UI.Constants.BoardCellBorderThickness, UI.Constants.BoardCellBorderThickness), Orientation = UI.BoardCellOrientation.East, StripeColor = UI.PropertyColors.SeventhGroup }));
+            Spaces.Add(new VM.Spaces.Railroad(titleDeeds.First(x => x.Name == PropertyNames.ShortLine), new VM.Spaces.SpaceDto { Row = 5, Column = 10, RowSpan = 1, ColumnSpan = 1, Border = new Thickness(UI.Constants.BoardCellBorderThickness, 0, UI.Constants.BoardCellBorderThickness, UI.Constants.BoardCellBorderThickness), Orientation = UI.BoardCellOrientation.East, StripeColor = null }));
+            Spaces.Add(new VM.Spaces.Chance(new VM.Spaces.SpaceDto { Row = 6, Column = 10, RowSpan = 1, ColumnSpan = 1, Border = new Thickness(UI.Constants.BoardCellBorderThickness, 0, UI.Constants.BoardCellBorderThickness, UI.Constants.BoardCellBorderThickness), Orientation = UI.BoardCellOrientation.East, StripeColor = null }));
+            Spaces.Add(new VM.Spaces.Street(titleDeeds.First(x => x.Name == PropertyNames.ParkPlace), new VM.Spaces.SpaceDto { Row = 7, Column = 10, RowSpan = 1, ColumnSpan = 1, Border = new Thickness(UI.Constants.BoardCellBorderThickness, 0, UI.Constants.BoardCellBorderThickness, UI.Constants.BoardCellBorderThickness), Orientation = UI.BoardCellOrientation.East, StripeColor = UI.PropertyColors.EighthGroup }));
+            Spaces.Add(new VM.Spaces.LuxuryTax(GameConstants.LuxuryTax, new VM.Spaces.SpaceDto { Row = 8, Column = 10, RowSpan = 1, ColumnSpan = 1, Border = new Thickness(UI.Constants.BoardCellBorderThickness, 0, UI.Constants.BoardCellBorderThickness, UI.Constants.BoardCellBorderThickness), Orientation = UI.BoardCellOrientation.East, StripeColor = null }));
+            Spaces.Add(new VM.Spaces.Street(titleDeeds.First(x => x.Name == PropertyNames.Boardwalk), new VM.Spaces.SpaceDto { Row = 9, Column = 10, RowSpan = 1, ColumnSpan = 1, Border = new Thickness(UI.Constants.BoardCellBorderThickness, 0, UI.Constants.BoardCellBorderThickness, 0), Orientation = UI.BoardCellOrientation.East, StripeColor = UI.PropertyColors.EighthGroup }));
+
             hotels = GameConstants.TotalHotels;
             houses = GameConstants.TotalHouses;
         }
@@ -128,142 +174,142 @@ namespace Monopoly
 
         #region Rules
 
-        private void RuleInherit(Board board, VM.Player targetPlayer)
+        private void RuleInherit(VM.Player targetPlayer)
         {
             throw new NotImplementedException();
         }
 
-        private void RuleBeautyContest(Board board, VM.Player targetPlayer)
+        private void RuleBeautyContest(VM.Player targetPlayer)
         {
             throw new NotImplementedException();
         }
 
-        private void RuleStreetRepairs(Board board, VM.Player targetPlayer)
+        private void RuleStreetRepairs(VM.Player targetPlayer)
         {
             throw new NotImplementedException();
         }
 
-        private void RuleConsultancyFee(Board board, VM.Player targetPlayer)
+        private void RuleConsultancyFee(VM.Player targetPlayer)
         {
             throw new NotImplementedException();
         }
 
-        private void RuleSchoolFees(Board board, VM.Player targetPlayer)
+        private void RuleSchoolFees(VM.Player targetPlayer)
         {
             throw new NotImplementedException();
         }
 
-        private void RuleHospitalFees(Board board, VM.Player targetPlayer)
+        private void RuleHospitalFees(VM.Player targetPlayer)
         {
             throw new NotImplementedException();
         }
 
-        private void RuleLifeInsurance(Board board, VM.Player targetPlayer)
+        private void RuleLifeInsurance(VM.Player targetPlayer)
         {
             throw new NotImplementedException();
         }
 
-        private void RuleBirthday(Board board, VM.Player targetPlayer)
+        private void RuleBirthday(VM.Player targetPlayer)
         {
             throw new NotImplementedException();
         }
 
-        private void RuleIncomeTaxRefund(Board board, VM.Player targetPlayer)
+        private void RuleIncomeTaxRefund(VM.Player targetPlayer)
         {
             throw new NotImplementedException();
         }
 
-        private void RuleHolidayFund(Board board, VM.Player targetPlayer)
+        private void RuleHolidayFund(VM.Player targetPlayer)
         {
             throw new NotImplementedException();
         }
 
-        private void RuleGrandOperaNight(Board board, VM.Player targetPlayer)
+        private void RuleGrandOperaNight(VM.Player targetPlayer)
         {
             throw new NotImplementedException();
         }
 
-        private void RuleStockSale(Board board, VM.Player targetPlayer)
+        private void RuleStockSale(VM.Player targetPlayer)
         {
             throw new NotImplementedException();
         }
 
-        private void RuleDoctorFees(Board board, VM.Player targetPlayer)
+        private void RuleDoctorFees(VM.Player targetPlayer)
         {
             throw new NotImplementedException();
         }
 
-        private void RuleBankError(Board board, VM.Player targetPlayer)
+        private void RuleBankError(VM.Player targetPlayer)
         {
             throw new NotImplementedException();
         }
 
-        private void RuleLoanMatures(Board board, VM.Player targetPlayer)
+        private void RuleLoanMatures(VM.Player targetPlayer)
         {
             throw new NotImplementedException();
         }
 
-        private void RuleElectedChairman(Board board, VM.Player targetPlayer)
+        private void RuleElectedChairman(VM.Player targetPlayer)
         {
             throw new NotImplementedException();
         }
 
-        private void RuleTakeWalkOnBoardwalk(Board board, VM.Player targetPlayer)
+        private void RuleTakeWalkOnBoardwalk(VM.Player targetPlayer)
         {
             throw new NotImplementedException();
         }
 
-        private void RuleTakeTripToReading(Board board, VM.Player targetPlayer)
+        private void RuleTakeTripToReading(VM.Player targetPlayer)
         {
             throw new NotImplementedException();
         }
 
-        private void RuleMakeGeneralRepairs(Board board, VM.Player targetPlayer)
+        private void RuleMakeGeneralRepairs(VM.Player targetPlayer)
         {
             throw new NotImplementedException();
         }
 
-        private void RuleGoToJail(Board board, VM.Player targetPlayer)
+        private void RuleGoToJail(VM.Player targetPlayer)
         {
             throw new NotImplementedException();
         }
 
-        private void RuleGoBackThreeSpaces(Board board, VM.Player targetPlayer)
+        private void RuleGoBackThreeSpaces(VM.Player targetPlayer)
         {
             throw new NotImplementedException();
         }
 
-        private void RuleGetOutOfJailFree(Board board, VM.Player targetPlayer)
+        private void RuleGetOutOfJailFree(VM.Player targetPlayer)
         {
             throw new NotImplementedException();
         }
 
-        private void RuleBankPaysDividend(Board board, VM.Player targetPlayer)
+        private void RuleBankPaysDividend(VM.Player targetPlayer)
         {
             throw new NotImplementedException();
         }
 
-        private void RuleAdvanceToNearestRailroad(Board board, VM.Player targetPlayer)
+        private void RuleAdvanceToNearestRailroad(VM.Player targetPlayer)
         {
             throw new NotImplementedException();
         }
 
-        private void RuleAdvanceToNearestUtility(Board board, VM.Player targetPlayer)
+        private void RuleAdvanceToNearestUtility(VM.Player targetPlayer)
         {
             throw new NotImplementedException();
         }
 
-        private void RuleAdvanceStCharlesPlace(Board board, VM.Player targetPlayer)
+        private void RuleAdvanceStCharlesPlace(VM.Player targetPlayer)
         {
             throw new NotImplementedException();
         }
 
-        private void RuleAdvanceToIllinois(Board board, VM.Player targetPlayer)
+        private void RuleAdvanceToIllinois(VM.Player targetPlayer)
         {
             throw new NotImplementedException();
         }
 
-        private void RuleAdvanceToGo(Board board, VM.Player targetPlayer)
+        private void RuleAdvanceToGo(VM.Player targetPlayer)
         {
             throw new NotImplementedException();
         }
@@ -277,9 +323,7 @@ namespace Monopoly
             if (players < GameConstants.MinimumPlayers || players > GameConstants.MaximumPlayers) throw new MonopolyException($"Invalid players count {players}");
 
             CurrentPlayers.Clear();
-            Board.Clear();
-
-            foreach (var player in this.players) player.Clear();
+            foreach (var space in Spaces) space.Clear();
 
             var allTokens = TokenNames.AllTokens();
             var totalTokens = TokenNames.TotalTokens();
@@ -304,11 +348,18 @@ namespace Monopoly
                 }
             }
 
-            Board.Init(CurrentPlayers);
-            currentPlayerIndex = 0;
-            currentPlayer = CurrentPlayers[currentPlayerIndex];
+            Spaces[0].SetVisitors(CurrentPlayers);
+            foreach (var player in this.players) player.Money = GameConstants.InitialMoney;
+            SetCurrentPlayer(0);
 
             Running = true;
+        }
+
+        private void SetCurrentPlayer(int index)
+        {
+            currentPlayerIndex = index;
+            currentPlayer = CurrentPlayers[currentPlayerIndex];
+            CurrentPlayerChanged?.Invoke(this, new Events.CurrentPlayerChangedArgs { CurrentPlayer = currentPlayer });
         }
 
         public void ThrowDice()
@@ -318,21 +369,23 @@ namespace Monopoly
             Random random = new Random();
             firstDie = random.Next(GameConstants.MaximumDiceValue) + 1;
             secondDie = random.Next(GameConstants.MaximumDiceValue) + 1;
-            var space = Board.Spaces.FirstOrDefault(x => x.Visitors.Contains(currentPlayer));
+            var sourceSpace = Spaces.FirstOrDefault(x => x.Visitors.Contains(currentPlayer));
 
-            if (space == null) throw new MonopolyException($"Player '{currentPlayer.Name}' wasn't found at board.");
+            if (sourceSpace == null) throw new MonopolyException($"Player '{currentPlayer.Name}' wasn't found at board.");
 
-            space.Visitors.Remove(currentPlayer);
-            var spaceIndex = Board.Spaces.IndexOf(space);
+            sourceSpace.Visitors.Remove(currentPlayer);
+            var spaceIndex = Spaces.IndexOf(sourceSpace);
             spaceIndex += firstDie + secondDie;
 
-            if (spaceIndex >= Board.Spaces.Count()) spaceIndex %= Board.Spaces.Count();
+            if (spaceIndex >= Spaces.Count()) spaceIndex %= Spaces.Count();
 
-            Board.Spaces[spaceIndex].Visitors.Add(currentPlayer);
-            currentPlayerIndex = (currentPlayerIndex + 1) % CurrentPlayers.Count;
-            currentPlayer = CurrentPlayers[currentPlayerIndex];
+            var destinationSpace = Spaces[spaceIndex];
+            destinationSpace.Visitors.Add(currentPlayer);
+            SetCurrentPlayer((currentPlayerIndex + 1) % CurrentPlayers.Count);
 
-            DiceThrown?.Invoke(this, new Events.DiceThrownArgs { CurrentPlayer = currentPlayer, FirstDie = firstDie, SecondDie = secondDie });
+            DiceThrown?.Invoke(this, new Events.DiceThrownArgs { FirstDie = firstDie, SecondDie = secondDie });
+
+            destinationSpace.Check(currentPlayer);
         }
 
 #if DEBUG
@@ -342,7 +395,6 @@ namespace Monopoly
             foreach (var card in communityChest) card.Log(stream);
             foreach (var card in chance) card.Log(stream);
             foreach (var player in players) player.Log(stream);
-            Board.Log(stream);
             stream.WriteLine($"Hotels: {hotels}");
             stream.WriteLine($"Houses: {houses}");
         }
@@ -352,7 +404,7 @@ namespace Monopoly
 
         #region Properties
 
-        public Board Board { get; }
+        public ObservableCollection<VM.Spaces.Space> Spaces { get; }
 
         public List<VM.Player> CurrentPlayers { get; }
 
