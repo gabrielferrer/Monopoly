@@ -6,7 +6,7 @@ using System.Windows.Media;
 
 namespace Monopoly.VM
 {
-    public class GameWindowViewModel : ViewModelBase
+    public class GameWindowViewModel : WindowViewModel
     {
         #region Fields
 
@@ -97,8 +97,6 @@ namespace Monopoly.VM
         #region Properties
 
         private bool CanStartNewGame => !game.Running;
-
-        public Brush WindowColor => new SolidColorBrush(UI.Constants.BoardColor);
 
         public ObservableCollection<double> RowDefinitions => new ObservableCollection<double>(rowDefinitions);
 

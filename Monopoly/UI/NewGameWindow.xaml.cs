@@ -1,28 +1,20 @@
-﻿using System.Windows;
+﻿using Monopoly.VM;
 
 namespace Monopoly.UI
 {
     /// <summary>
     /// Interaction logic for NewGameWindow.xaml
     /// </summary>
-    public partial class NewGameWindow : Window
+    public partial class NewGameWindow : View<NewGameWindowViewModel>
     {
         public NewGameWindow()
         {
             InitializeComponent();
-            DataContext.Window = this;
         }
 
-        public new VM.NewGameWindowViewModel DataContext
+        protected override NewGameWindowViewModel CreateDataContext()
         {
-            get
-            {
-                return (VM.NewGameWindowViewModel)base.DataContext;
-            }
-            set
-            {
-                base.DataContext = value;
-            }
+            return new NewGameWindowViewModel();
         }
     }
 }

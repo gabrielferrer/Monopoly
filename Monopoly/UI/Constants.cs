@@ -4,8 +4,6 @@ namespace Monopoly.UI
 {
     public static class Constants
     {
-        public static readonly Color BoardColor = (Color)ColorConverter.ConvertFromString("#e9e6db");
-
         public const int BoardRows = 11;
         public const int BoardColumns = 11;
         public const int BoardCellWidth = 160;

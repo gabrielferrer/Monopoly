@@ -65,6 +65,9 @@
     <Compile Include="UI\BoardCellOrientation.cs" />
     <Compile Include="UI\BoardCellTemplateSelector.cs" />
     <Compile Include="UI\BrushToVisibilityConverter.cs" />
+    <Compile Include="UI\ConnectServerWindow.xaml.cs">
+      <DependentUpon>ConnectServerWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="UI\Constants.cs" />
     <Compile Include="UI\GameWindow.xaml.cs">
       <DependentUpon>GameWindow.xaml</DependentUpon>
@@ -74,6 +77,9 @@
     </Compile>
     <Compile Include="UI\PlayerColors.cs" />
     <Compile Include="UI\PropertyColors.cs" />
+    <Compile Include="UI\View.cs" />
+    <Compile Include="VM\ConnectServerViewModel.cs" />
+    <Compile Include="VM\Server.cs" />
     <Compile Include="VM\Spaces\SpaceDto.cs" />
     <Compile Include="VM\GameWindowViewModel.cs" />
     <Compile Include="PropertyNames.cs" />
@@ -109,6 +115,7 @@
     <Compile Include="Events\NewGameArgs.cs" />
     <Compile Include="VM\NewGameWindowViewModel.cs" />
     <Compile Include="VM\ViewModelBase.cs" />
+    <Compile Include="VM\WindowViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="VM\Player.cs" />
@@ -138,6 +145,14 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <Page Include="UI\ConnectServerWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UI\ConnectServerWindowStyles.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="UI\GameWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

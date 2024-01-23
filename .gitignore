@@ -4,4 +4,6 @@
 
 /Monopoly/bin
 /Monopoly/obj
-/.vs/Monopoly/v16/.suo
+/.vs
+/Server/obj
+/Server/bin

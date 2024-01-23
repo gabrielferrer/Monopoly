@@ -1,10 +1,8 @@
-﻿using System.Windows;
-using System.Windows.Input;
-using System.Windows.Media;
+﻿using System.Windows.Input;
 
 namespace Monopoly.VM
 {
-    public class NewGameWindowViewModel : ViewModelBase
+    public class NewGameWindowViewModel : WindowViewModel
     {
         #region Fields
 
@@ -47,11 +45,7 @@ namespace Monopoly.VM
 
         #region Properties
 
-        public Brush WindowColor => new SolidColorBrush(UI.Constants.BoardColor);
-
         private bool CanAccept => true;
-
-        public Window Window { get; set; }
 
         public int Players
         {

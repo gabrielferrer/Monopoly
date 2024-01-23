@@ -50,10 +50,7 @@
             Value="100" />
         <Setter
             Property="Height"
-            Value="36" />
-        <Setter
-            Property="Margin"
-            Value="0,10,10,10" />
+            Value="32" />
     </Style>
 
 </ResourceDictionary>
