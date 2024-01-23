@@ -11,9 +11,7 @@ namespace Monopoly
         {
             base.OnStartup(e);
 
-            var gameWindowViewModel = new VM.GameWindowViewModel();
             var window = new UI.GameWindow();
-            window.DataContext = gameWindowViewModel;
             Current.MainWindow = window;
             window.Show();
         }
