@@ -1,0 +1,120 @@
+﻿<ui:View
+    x:Class="Monopoly.UI.GameWindow"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:ui="clr-namespace:Monopoly.UI"
+    xmlns:vm="clr-namespace:Monopoly.VM"
+    x:TypeArguments="vm:GameWindowViewModel"
+    WindowState="Maximized">
+    <Window.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary
+                    Source="pack://application:,,,/Monopoly;component/UI/GameWindowStyles.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </Window.Resources>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition
+                Height="Auto" />
+            <RowDefinition
+                Height="*" />
+            <RowDefinition
+                Height="Auto" />
+        </Grid.RowDefinitions>
+        <Menu>
+            <MenuItem
+                Header="File">
+                <MenuItem
+                    Command="{Binding ConnectCommand}"
+                    Header="Connect..." />
+            </MenuItem>
+        </Menu>
+        <ScrollViewer
+            Grid.Row="1"
+            HorizontalScrollBarVisibility="Auto">
+            <ItemsControl
+                ItemTemplateSelector="{StaticResource BoardCellTemplateSelector}"
+                ItemsSource="{Binding Spaces}">
+                <ItemsControl.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <Grid
+                            ui:GridExtensions.ColumnDefinitions="{Binding ColumnDefinitions}"
+                            ui:GridExtensions.RowDefinitions="{Binding RowDefinitions}"
+                            IsItemsHost="True" />
+                    </ItemsPanelTemplate>
+                </ItemsControl.ItemsPanel>
+                <ItemsControl.ItemContainerStyle>
+                    <Style>
+                        <Setter
+                            Property="Grid.Column"
+                            Value="{Binding Column}" />
+                        <Setter
+                            Property="Grid.Row"
+                            Value="{Binding Row}" />
+                        <Setter
+                            Property="Grid.RowSpan"
+                            Value="{Binding RowSpan}" />
+                        <Setter
+                            Property="Grid.ColumnSpan"
+                            Value="{Binding ColumnSpan}" />
+                    </Style>
+                </ItemsControl.ItemContainerStyle>
+            </ItemsControl>
+        </ScrollViewer>
+        <StackPanel
+            Grid.Row="2"
+            Style="{StaticResource BottomBarStyle}">
+            <Border
+                Style="{StaticResource InformationBorderStyle}">
+                <TextBlock
+                    Style="{StaticResource InformationTextStyle}"
+                    Text="Current Player:" />
+            </Border>
+            <Border
+                Style="{StaticResource PlayerDataBorderStyle}">
+                <TextBlock
+                    Style="{StaticResource InformationTextStyle}"
+                    Text="{Binding CurrentPlayerName}" />
+            </Border>
+            <Border
+                Background="{Binding CurrentPlayerColor}"
+                Style="{StaticResource CurrentPlayerBorderStyle}" />
+            <Border
+                Style="{StaticResource InformationBorderStyle}">
+                <TextBlock
+                    Style="{StaticResource InformationTextStyle}"
+                    Text="Money:" />
+            </Border>
+            <Border
+                Style="{StaticResource PlayerDataBorderStyle}">
+                <TextBlock
+                    Style="{StaticResource MoneyTextStyle}"
+                    Text="{Binding CurrentPlayerMoney}" />
+            </Border>
+            <Button
+                Command="{Binding ThrowDiceCommand}"
+                Content="Throw Dice"
+                Style="{StaticResource ThrowDiceButtonStyle}" />
+            <Border
+                Style="{StaticResource InformationBorderStyle}">
+                <TextBlock
+                    Style="{StaticResource InformationTextStyle}"
+                    Text="Dice:" />
+            </Border>
+            <Border
+                Style="{StaticResource DiceBorderStyle}">
+                <TextBlock
+                    Style="{StaticResource DiceTextStyle}"
+                    Text="{Binding FirstDie}" />
+            </Border>
+            <Border
+                Style="{StaticResource DiceBorderStyle}">
+                <TextBlock
+                    Style="{StaticResource DiceTextStyle}"
+                    Text="{Binding SecondDie}" />
+            </Border>
+        </StackPanel>
+    </Grid>
+</ui:View>
