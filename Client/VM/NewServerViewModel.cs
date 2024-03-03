@@ -35,7 +35,7 @@ namespace Monopoly.VM
                 Port = int.Parse(Port)
             };
 
-            if (CheckServer(server))
+            if (CheckServer.Invoke(server))
             {
                 Window?.Close();
             }

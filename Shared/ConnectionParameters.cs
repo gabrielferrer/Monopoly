@@ -1,6 +1,6 @@
-﻿namespace Server
+﻿namespace Shared
 {
-    class ConnectionListenerParameters
+    public class ConnectionParameters
     {
         public string Address { get; set; }
 

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Shared;
+using System;
 using System.Collections.Concurrent;
 using System.Configuration;
 using System.Net;
@@ -21,14 +22,14 @@ namespace Server
 
         #region Infrastructure
 
-        private static bool Stop()
+        private static bool Stopped()
         {
             return Interlocked.Read(ref stopped) != 0;
         }
 
         private static void ConnectionListenerStart(object data)
         {
-            var parameters = data as ConnectionListenerParameters;
+            var parameters = data as ConnectionParameters;
 
             if (parameters == null)
             {
@@ -43,11 +44,15 @@ namespace Server
                 var listener = new TcpListener(address, port);
                 listener.Start();
 
-                while (!Stop())
+                while (!Stopped())
                 {
                     var client = listener.AcceptTcpClient();
                     clients.Add(client);
-                    //Console.WriteLine($"New client connected from {client.Client.RemoteEndPoint.}");
+
+                    if (client.Client.RemoteEndPoint is IPEndPoint iPEndPoint)
+                    {
+                        Console.WriteLine($"New client connected from {iPEndPoint.Address}:{iPEndPoint.Port}");
+                    }
                 }
             }
             catch (Exception e)
@@ -71,7 +76,7 @@ namespace Server
 
         private void Listen()
         {
-            var parameters = new ConnectionListenerParameters
+            var parameters = new ConnectionParameters
             {
                 Address = configuration.Address,
                 Port = configuration.Port
@@ -89,7 +94,7 @@ namespace Server
 
         private void Run()
         {
-            while (!Stop())
+            while (!Stopped())
             {
                 
             }

@@ -1,4 +1,5 @@
 ﻿using Monopoly.Services;
+using System;
 using System.Collections.ObjectModel;
 using System.Windows.Input;
 
@@ -63,12 +64,16 @@ namespace Monopoly.VM
                 return;
             }
 
+            ConnectServer(SelectedServer);
+
             Window?.Close();
         }
 
         #endregion
 
         #region Properties
+
+        public Action<Server> ConnectServer { get; set; }
 
         private bool CanConnect => SelectedServer != null;
 

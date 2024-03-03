@@ -1,5 +1,9 @@
 ﻿using Monopoly.Events;
+using Shared;
+using System;
 using System.Collections.ObjectModel;
+using System.Net.Sockets;
+using System.Threading;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Media;
@@ -8,8 +12,16 @@ namespace Monopoly.VM
 {
     public class GameWindowViewModel : WindowViewModel
     {
+        #region
+
+        private const int TcpCientBufferSize = 2048;
+
+        #endregion
+
         #region Fields
 
+        private Thread gameThread;
+        private static long stopped = 0;
         private Game game;
         private double[] rowDefinitions;
         private double[] columnDefinitions;
@@ -32,8 +44,15 @@ namespace Monopoly.VM
             rowDefinitions = new double[UI.Constants.BoardRows];
             columnDefinitions = new double[UI.Constants.BoardColumns];
 
-            for (int row = 0; row < UI.Constants.BoardRows; row++) rowDefinitions[row] = double.NaN;
-            for (int column = 0; column < UI.Constants.BoardColumns; column++) columnDefinitions[column] = double.NaN;
+            for (int row = 0; row < UI.Constants.BoardRows; row++)
+            {
+                rowDefinitions[row] = double.NaN;
+            }
+
+            for (int column = 0; column < UI.Constants.BoardColumns; column++)
+            {
+                columnDefinitions[column] = double.NaN;
+            }
 
             game = new Game();
             game.DiceThrown += OnDiceThrown;
@@ -46,11 +65,60 @@ namespace Monopoly.VM
 #endif
         }
 
+        private bool Stopped()
+        {
+            return Interlocked.Read(ref stopped) != 0;
+        }
+
         private void Connect()
         {
             var window = new UI.ConnectServerWindow();
+
+            window.DataContext.ConnectServer = server =>
+            {
+                var parameters = new ConnectionParameters
+                {
+                    Address = server.Address,
+                    Port = server.Port
+                };
+
+                gameThread = new Thread(GameThread);
+                gameThread.Start(parameters);
+            };
+
             //window.DataContext.NewGame += OnNewGame;
             window.Show();
+        }
+
+        private void GameThread(object data)
+        {
+            var parameters = data as ConnectionParameters;
+
+            if (parameters == null)
+            {
+                Console.WriteLine($"Invalid data type '{nameof(data)}'");
+                return;
+            }
+
+            try
+            {
+                var tcpClient = new TcpClient();
+                tcpClient.Connect(parameters.Address, parameters.Port);
+                var buffer = new byte[TcpCientBufferSize];
+                var offset = 0;
+                var size = TcpCientBufferSize;
+                var clientStream = tcpClient.GetStream();
+
+                while (!Stopped())
+                {
+                    var bytesRead = clientStream.Read(buffer, offset, size);
+                    Console.WriteLine(bytesRead);
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine($"There was an error connecting to server at {parameters.Address}:{parameters.Port}. {e.Message}");
+            }
         }
 
         private void OnNewGame(object sender, NewGameArgs args)
