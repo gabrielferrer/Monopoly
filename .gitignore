@@ -5,6 +5,10 @@
 /Monopoly/bin
 /Monopoly/obj
 /.vs
+/Client/obj
+/Client/bin
 /Server/obj
 /Server/bin
+/Shared/obj
+/Shared/bin
 /packages
