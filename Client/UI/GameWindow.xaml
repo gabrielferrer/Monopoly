@@ -28,7 +28,8 @@
                 Header="File">
                 <MenuItem
                     Command="{Binding ConnectCommand}"
-                    Header="Connect..." />
+                    Header="Connect..."
+                    IsEnabled="{Binding IsConnected, Converter={ui:BoolNotConverter}}" />
             </MenuItem>
         </Menu>
         <ScrollViewer

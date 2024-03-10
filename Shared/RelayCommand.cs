@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Windows.Input;
 
-namespace Monopoly
+namespace Shared
 {
     public class RelayCommand : ICommand
     {
@@ -12,7 +12,10 @@ namespace Monopoly
 
         public RelayCommand(Predicate<object> canExecute, Action<object> execute)
         {
-            if (execute == null) throw new MonopolyException($"Parameter {nameof(execute)} can't be null at {nameof(RelayCommand)}");
+            if (execute == null)
+            {
+                throw new Exception($"Parameter {nameof(execute)} can't be null at {nameof(RelayCommand)}");
+            }
 
             this.canExecute = canExecute;
             this.execute = execute;

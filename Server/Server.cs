@@ -1,4 +1,5 @@
 ﻿using Shared;
+using Shared.Messages;
 using System;
 using System.Collections.Concurrent;
 using System.Configuration;
@@ -14,7 +15,8 @@ namespace Server
         #region Fields
 
         private static long stopped = 0;
-        private static ConcurrentBag<TcpClient> clients = new ConcurrentBag<TcpClient>();
+        private static ConcurrentBag<Thread> clients = new ConcurrentBag<Thread>();
+        private static MessageService messageService = new MessageService();
         private Configuration configuration;
         private Thread connectionListener;
 
@@ -27,7 +29,7 @@ namespace Server
             return Interlocked.Read(ref stopped) != 0;
         }
 
-        private static void ConnectionListenerStart(object data)
+        private static void ConnectionListener(object data)
         {
             var parameters = data as ConnectionParameters;
 
@@ -44,15 +46,22 @@ namespace Server
                 var listener = new TcpListener(address, port);
                 listener.Start();
 
+                Console.WriteLine($"Listening on {address}:{port}");
+
                 while (!Stopped())
                 {
                     var client = listener.AcceptTcpClient();
-                    clients.Add(client);
 
                     if (client.Client.RemoteEndPoint is IPEndPoint iPEndPoint)
                     {
                         Console.WriteLine($"New client connected from {iPEndPoint.Address}:{iPEndPoint.Port}");
                     }
+
+                    var clientThread = new Thread(ClientListener);
+
+                    clients.Add(clientThread);
+
+                    clientThread.Start(client);
                 }
             }
             catch (Exception e)
@@ -61,10 +70,29 @@ namespace Server
             }
         }
 
-        private static void PrintWelcome()
+        private static void ClientListener(object data)
+        {
+            if (!(data is TcpClient client))
+            {
+                return;
+            }
+
+            while (!Stopped())
+            {
+                var message = messageService.Read(client);
+            }
+        }
+
+        private void PrintWelcome()
         {
             var assembly = Assembly.GetCallingAssembly();     
             Console.WriteLine($"Monopoly server '{assembly.GetName().Name}', version {assembly.GetName().Version}");
+        }
+
+        private void RegisterMessageService()
+        {
+            messageService = new MessageService();
+            ServiceLocator.Instance.Register<IMessageService>(messageService);
         }
 
         private void ReadConfiguration()
@@ -82,12 +110,13 @@ namespace Server
                 Port = configuration.Port
             };
 
-            connectionListener = new Thread(ConnectionListenerStart);
+            connectionListener = new Thread(ConnectionListener);
             connectionListener.Start(parameters);
         }
 
         private void Initialize()
         {
+            RegisterMessageService();
             ReadConfiguration();
             Listen();
         }
@@ -96,7 +125,7 @@ namespace Server
         {
             while (!Stopped())
             {
-                
+                // Game logic here.
             }
         }
 

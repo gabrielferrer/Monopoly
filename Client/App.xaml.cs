@@ -1,4 +1,6 @@
 ﻿using Monopoly.Services;
+using Shared;
+using Shared.Messages;
 using System.Windows;
 
 namespace Monopoly
@@ -13,6 +15,7 @@ namespace Monopoly
             base.OnStartup(e);
 
             ServiceLocator.Instance.Register<IServersService>(new ServersService());
+            ServiceLocator.Instance.Register<IMessageService>(new MessageService());
 
             var window = new UI.GameWindow();
             Current.MainWindow = window;

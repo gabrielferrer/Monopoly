@@ -1,4 +1,5 @@
 ﻿using Monopoly.Services;
+using Shared;
 using System;
 using System.Collections.ObjectModel;
 using System.Windows.Input;

@@ -1,5 +1,6 @@
 ﻿using Monopoly.Events;
 using Shared;
+using Shared.Messages;
 using System;
 using System.Collections.ObjectModel;
 using System.Net.Sockets;
@@ -12,17 +13,12 @@ namespace Monopoly.VM
 {
     public class GameWindowViewModel : WindowViewModel
     {
-        #region
-
-        private const int TcpCientBufferSize = 2048;
-
-        #endregion
-
         #region Fields
 
         private Thread gameThread;
         private static long stopped = 0;
         private Game game;
+        private bool connected;
         private double[] rowDefinitions;
         private double[] columnDefinitions;
         private string currentPlayerName;
@@ -100,19 +96,19 @@ namespace Monopoly.VM
                 return;
             }
 
+            var messageService = ServiceLocator.Instance.GetService<IMessageService>();
+
             try
             {
-                var tcpClient = new TcpClient();
-                tcpClient.Connect(parameters.Address, parameters.Port);
-                var buffer = new byte[TcpCientBufferSize];
-                var offset = 0;
-                var size = TcpCientBufferSize;
-                var clientStream = tcpClient.GetStream();
+                var client = new TcpClient();
+                client.Connect(parameters.Address, parameters.Port);
+
+                Application.Current.Dispatcher.Invoke(() => IsConnected = true);
 
                 while (!Stopped())
                 {
-                    var bytesRead = clientStream.Read(buffer, offset, size);
-                    Console.WriteLine(bytesRead);
+                    var message = messageService.Read(client);
+                    Console.WriteLine(message);
                 }
             }
             catch (Exception e)
@@ -165,6 +161,20 @@ namespace Monopoly.VM
         #region Properties
 
         private bool CanConnect => !game.Running;
+
+        public bool IsConnected
+        {
+            get
+            {
+                return connected;
+            }
+            set
+            {
+                if (connected == value) return;
+                connected = value;
+                OnPropertyChanged();
+            }
+        }
 
         public ObservableCollection<double> RowDefinitions => new ObservableCollection<double>(rowDefinitions);
 

@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace Monopoly
+namespace Shared
 {
-    internal class ServiceLocator
+    public class ServiceLocator
     {
         private static ServiceLocator locator;
 

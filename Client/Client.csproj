@@ -79,12 +79,12 @@
     </ApplicationDefinition>
     <Compile Include="Cards\ChanceTexts.cs" />
     <Compile Include="Cards\CommunityChestTexts.cs" />
+    <Compile Include="UI\BoolNotConverter.cs" />
     <Compile Include="Events\CurrentPlayerChangedArgs.cs" />
     <Compile Include="Events\DiceThrownArgs.cs" />
     <Compile Include="GameConstants.cs" />
     <Compile Include="MarkupExtensions.cs" />
     <Compile Include="MonopolyException.cs" />
-    <Compile Include="ServiceLocator.cs" />
     <Compile Include="Services\IServersService.cs" />
     <Compile Include="Services\ServersService.cs" />
     <Compile Include="UI\BoardCellOrientation.cs" />
@@ -140,7 +140,6 @@
     <Compile Include="Game.cs" />
     <Compile Include="TokenNames.cs" />
     <Compile Include="UI\GridExtensions.cs" />
-    <Compile Include="RelayCommand.cs" />
     <Compile Include="Events\NewGameArgs.cs" />
     <Compile Include="VM\NewGameWindowViewModel.cs" />
     <Compile Include="VM\ViewModelBase.cs" />
@@ -213,6 +212,9 @@
       <Project>{75420d8b-38de-495a-88ba-d900eef57b3e}</Project>
       <Name>Shared</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Converters\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
