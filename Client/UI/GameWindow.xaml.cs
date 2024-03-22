@@ -1,4 +1,6 @@
 ﻿using Monopoly.VM;
+using System;
+using System.ComponentModel;
 
 namespace Monopoly.UI
 {
@@ -15,6 +17,20 @@ namespace Monopoly.UI
         protected override GameWindowViewModel CreateDataContext()
         {
             return new GameWindowViewModel();
+        }
+
+        protected override void OnClosing(CancelEventArgs e)
+        {
+            if (!DataContext.CanClose())
+            {
+                e.Cancel = true;
+            }
+        }
+
+        protected override void OnClosed(EventArgs e)
+        {
+            base.OnClosed(e);
+            DataContext.Close();
         }
     }
 }

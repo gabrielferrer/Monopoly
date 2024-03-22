@@ -5,6 +5,7 @@ using System;
 using System.Collections.ObjectModel;
 using System.Net.Sockets;
 using System.Threading;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Media;
@@ -15,8 +16,9 @@ namespace Monopoly.VM
     {
         #region Fields
 
-        private Thread gameThread;
-        private static long stopped = 0;
+        private TcpClient client;
+        private Thread readThread;
+        private Thread writeThread;
         private Game game;
         private bool connected;
         private double[] rowDefinitions;
@@ -34,7 +36,7 @@ namespace Monopoly.VM
         public GameWindowViewModel()
         {
             ConnectCommand = new RelayCommand(param => CanConnect, param => Connect());
-            ExitCommand = new RelayCommand(param => CanExit(), param => Exit());
+            NewGameCommand = new RelayCommand(param => CanCreateNewGame, param => NewGame());
             ThrowDiceCommand = new RelayCommand(param => ThrowDice());
 
             rowDefinitions = new double[UI.Constants.BoardRows];
@@ -61,36 +63,53 @@ namespace Monopoly.VM
 #endif
         }
 
-        private bool Stopped()
-        {
-            return Interlocked.Read(ref stopped) != 0;
-        }
-
         private void Connect()
         {
             var window = new UI.ConnectServerWindow();
 
             window.DataContext.ConnectServer = server =>
             {
-                var parameters = new ConnectionParameters
+                Task.Run(() =>
                 {
-                    Address = server.Address,
-                    Port = server.Port
-                };
+                    try
+                    {
+                        client = new TcpClient();
+                        client.Connect(server.Address, server.Port);
+                        Application.Current.Dispatcher.Invoke(() => IsConnected = true);
+                    }
+                    catch (Exception e)
+                    {
+                        Console.WriteLine($"There was an error connecting to server at {server.Address}:{server.Port}. {e.Message}");
+                        return;
+                    }
 
-                gameThread = new Thread(GameThread);
-                gameThread.Start(parameters);
+                    ShutdownServerConnection();
+
+                    readThread = new Thread(ReadThread);
+                    writeThread = new Thread(WriteThread);
+
+                    readThread.Start(client);
+                    writeThread.Start(client);
+                });
             };
 
-            //window.DataContext.NewGame += OnNewGame;
             window.Show();
         }
 
-        private void GameThread(object data)
+        private void NewGame()
         {
-            var parameters = data as ConnectionParameters;
+            var window = new UI.NewGameWindow();
 
-            if (parameters == null)
+            window.DataContext.NewGame += OnNewGame;
+
+            window.Show();
+        }
+
+        private void ReadThread(object data)
+        {
+            var client = data as TcpClient;
+
+            if (client == null)
             {
                 Console.WriteLine($"Invalid data type '{nameof(data)}'");
                 return;
@@ -98,28 +117,76 @@ namespace Monopoly.VM
 
             var messageService = ServiceLocator.Instance.GetService<IMessageService>();
 
-            try
+            while (true)
             {
-                var client = new TcpClient();
-                client.Connect(parameters.Address, parameters.Port);
-
-                Application.Current.Dispatcher.Invoke(() => IsConnected = true);
-
-                while (!Stopped())
+                try
                 {
                     var message = messageService.Read(client);
-                    Console.WriteLine(message);
+                    Application.Current.Dispatcher.Invoke(() => MessageRead(message));
+                }
+                catch (ThreadAbortException)
+                {
+                    Console.WriteLine($"Finalizing {nameof(ReadThread)}");
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine($"Exception at {nameof(ReadThread)}. {e.Message}");
+                    Application.Current.Dispatcher.Invoke(() => IsConnected = client?.Connected ?? false);
+                    return;
                 }
             }
-            catch (Exception e)
+        }
+
+        private void WriteThread(object data)
+        {
+            var client = data as TcpClient;
+
+            if (client == null)
             {
-                Console.WriteLine($"There was an error connecting to server at {parameters.Address}:{parameters.Port}. {e.Message}");
+                Console.WriteLine($"Invalid data type '{nameof(data)}'");
+                return;
             }
+
+            var messageService = ServiceLocator.Instance.GetService<IMessageService>();
+
+            while (true)
+            {
+                try
+                {
+                    Thread.Sleep(Timeout.Infinite);
+                }
+                catch (ThreadInterruptedException)
+                {
+                    var message = Application.Current.Dispatcher.Invoke(() => GetMessageToWrite());
+                    messageService.Write(client, message);
+                }
+                catch (ThreadAbortException)
+                {
+                    Console.WriteLine($"Finalizing {nameof(WriteThread)}");
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine($"Exception at {nameof(WriteThread)}. {e.Message}");
+                    Application.Current.Dispatcher.Invoke(() => IsConnected = client?.Connected ?? false);
+                    return;
+                }
+            }
+        }
+        
+        private void MessageRead(Message message)
+        {
+            // TODO:
+        }
+
+        private Message GetMessageToWrite()
+        {
+            return null;
         }
 
         private void OnNewGame(object sender, NewGameArgs args)
         {
             game.Start(args.Players);
+            OnPropertyChanged(nameof(GameInProcess));
         }
 
         private void OnDiceThrown(object sender, DiceThrownArgs args)
@@ -135,7 +202,27 @@ namespace Monopoly.VM
             CurrentPlayerColor = args.CurrentPlayer.PlayerColor;
         }
 
-        private bool CanExit()
+        private void ShutdownServerConnection()
+        {
+            try
+            {
+                client.Close();
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine($"Exception closing TCP client. {e.Message}");
+            }
+
+            readThread?.Abort();
+            writeThread?.Abort();
+        }
+
+        private void ThrowDice()
+        {
+            game.ThrowDice();
+        }
+
+        public bool CanClose()
         {
             if (game.Running)
             {
@@ -146,21 +233,18 @@ namespace Monopoly.VM
             return true;
         }
 
-        private void Exit()
+        public void Close()
         {
-            Application.Current.Shutdown();
-        }
-
-        private void ThrowDice()
-        {
-            game.ThrowDice();
+            ShutdownServerConnection();
         }
 
         #endregion
 
         #region Properties
 
-        private bool CanConnect => !game.Running;
+        private bool CanConnect => !IsConnected;
+
+        private bool CanCreateNewGame => IsConnected && !game.Running;
 
         public bool IsConnected
         {
@@ -172,9 +256,12 @@ namespace Monopoly.VM
             {
                 if (connected == value) return;
                 connected = value;
+                OnPropertyChanged(nameof(CanCreateNewGame));
                 OnPropertyChanged();
             }
         }
+
+        public bool GameInProcess => game.Running;
 
         public ObservableCollection<double> RowDefinitions => new ObservableCollection<double>(rowDefinitions);
 
@@ -261,6 +348,8 @@ namespace Monopoly.VM
         #region Commands
 
         public ICommand ConnectCommand { get; }
+
+        public ICommand NewGameCommand { get; }
 
         public ICommand ExitCommand { get; }
 
