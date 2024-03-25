@@ -19,8 +19,11 @@ namespace Monopoly.VM
         private TcpClient client;
         private Thread readThread;
         private Thread writeThread;
+        private readonly object writeMessageLock = new object();
+        private Message writeMessage;
         private Game game;
         private bool connected;
+        private bool gameInProcess;
         private double[] rowDefinitions;
         private double[] columnDefinitions;
         private string currentPlayerName;
@@ -28,6 +31,7 @@ namespace Monopoly.VM
         private Brush currentPlayerColor;
         private int firstDie;
         private int secondDie;
+        private string status;
 
         #endregion
 
@@ -52,6 +56,7 @@ namespace Monopoly.VM
                 columnDefinitions[column] = double.NaN;
             }
 
+            client = new TcpClient();
             game = new Game();
             game.DiceThrown += OnDiceThrown;
             game.CurrentPlayerChanged += OnCurrentPlayerChanged;
@@ -73,8 +78,12 @@ namespace Monopoly.VM
                 {
                     try
                     {
-                        client = new TcpClient();
-                        client.Connect(server.Address, server.Port);
+                        if (!client.Connected)
+                        {
+                            client.Connect(server.Address, server.Port);
+                            Application.Current.Dispatcher.Invoke(() => Status = $"Connected to server at {server.Address}:{server.Port}.");
+                        }
+
                         Application.Current.Dispatcher.Invoke(() => IsConnected = true);
                     }
                     catch (Exception e)
@@ -83,7 +92,8 @@ namespace Monopoly.VM
                         return;
                     }
 
-                    ShutdownServerConnection();
+                    readThread?.Abort();
+                    writeThread?.Abort();
 
                     readThread = new Thread(ReadThread);
                     writeThread = new Thread(WriteThread);
@@ -122,7 +132,7 @@ namespace Monopoly.VM
                 try
                 {
                     var message = messageService.Read(client);
-                    Application.Current.Dispatcher.Invoke(() => MessageRead(message));
+                    Application.Current.Dispatcher.Invoke(() => HandleMessage(message));
                 }
                 catch (ThreadAbortException)
                 {
@@ -157,8 +167,7 @@ namespace Monopoly.VM
                 }
                 catch (ThreadInterruptedException)
                 {
-                    var message = Application.Current.Dispatcher.Invoke(() => GetMessageToWrite());
-                    messageService.Write(client, message);
+                    messageService.Write(client, GetMessageToWrite());
                 }
                 catch (ThreadAbortException)
                 {
@@ -172,21 +181,56 @@ namespace Monopoly.VM
                 }
             }
         }
-        
-        private void MessageRead(Message message)
+
+        private void HandleMessage(Message message)
         {
-            // TODO:
+            if (message is GameCreatedMessage gameCreatedMessage)
+            {
+                HandleGameCreatedMessage(gameCreatedMessage);
+            }
+
+            if (message is PlayerInGameMessage playerInGameMessage)
+            {
+                HandlePlayerInGameMessage(playerInGameMessage);
+            }
+        }
+
+        private void HandlePlayerInGameMessage(PlayerInGameMessage playerInGameMessage)
+        {
+            Status = $"You are already playing.";
+        }
+
+        private void HandleGameCreatedMessage(GameCreatedMessage gameCreatedMessage)
+        {
+            GameInProcess = true;
+            Status = "Game started.";
         }
 
         private Message GetMessageToWrite()
         {
-            return null;
+            Message message;
+
+            lock (writeMessageLock)
+            {
+                message = writeMessage;
+            }
+
+            return message;
+        }
+
+        private void WriteMessage(Message message)
+        {
+            lock (writeMessageLock)
+            {
+                writeMessage = message.Clone();
+            }
+
+            writeThread?.Interrupt();
         }
 
         private void OnNewGame(object sender, NewGameArgs args)
         {
-            game.Start(args.Players);
-            OnPropertyChanged(nameof(GameInProcess));
+            WriteMessage(new CreateGameMessage());
         }
 
         private void OnDiceThrown(object sender, DiceThrownArgs args)
@@ -200,21 +244,6 @@ namespace Monopoly.VM
             CurrentPlayerName = args.CurrentPlayer.Name;
             CurrentPlayerMoney = args.CurrentPlayer.Money;
             CurrentPlayerColor = args.CurrentPlayer.PlayerColor;
-        }
-
-        private void ShutdownServerConnection()
-        {
-            try
-            {
-                client.Close();
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine($"Exception closing TCP client. {e.Message}");
-            }
-
-            readThread?.Abort();
-            writeThread?.Abort();
         }
 
         private void ThrowDice()
@@ -235,16 +264,22 @@ namespace Monopoly.VM
 
         public void Close()
         {
-            ShutdownServerConnection();
+            if (client.Connected)
+            {
+                client.Close();
+            }
+
+            readThread?.Abort();
+            writeThread?.Abort();
         }
 
         #endregion
 
         #region Properties
 
-        private bool CanConnect => !IsConnected;
+        public bool CanConnect => !IsConnected;
 
-        private bool CanCreateNewGame => IsConnected && !game.Running;
+        public bool CanCreateNewGame => IsConnected && !game.Running;
 
         public bool IsConnected
         {
@@ -255,13 +290,25 @@ namespace Monopoly.VM
             set
             {
                 if (connected == value) return;
-                connected = value;
+                connected = value;                
                 OnPropertyChanged(nameof(CanCreateNewGame));
                 OnPropertyChanged();
             }
         }
 
-        public bool GameInProcess => game.Running;
+        public bool GameInProcess
+        {
+            get
+            {
+                return gameInProcess;
+            }
+            set
+            {
+                if (gameInProcess == value) return;
+                gameInProcess = value;
+                OnPropertyChanged();
+            }
+        }
 
         public ObservableCollection<double> RowDefinitions => new ObservableCollection<double>(rowDefinitions);
 
@@ -339,6 +386,20 @@ namespace Monopoly.VM
             {
                 if (secondDie == value) return;
                 secondDie = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public string Status
+        {
+            get
+            {
+                return status;
+            }
+            set
+            {
+                if (status == value) return;
+                status = value;
                 OnPropertyChanged();
             }
         }

@@ -16,27 +16,44 @@ namespace Shared.Messages
         {
             var stream = client.GetStream();
             var buffer = new byte[TcpCientBufferSize];
-            var memoryStream = new MemoryStream();
+            var messageCarrierStream = new MemoryStream();
             int bytesRead;
 
             do
             {
                 bytesRead = stream.Read(buffer, 0, TcpCientBufferSize);
-                memoryStream.Write(buffer, 0, bytesRead);
+                messageCarrierStream.Write(buffer, 0, bytesRead);
             }
-            while (bytesRead < TcpCientBufferSize);
+            while (bytesRead == TcpCientBufferSize);
 
-            return memoryStream.Length > 0
-                ? Serializer.Deserialize<Message>(memoryStream)
-                : null;
+            if (messageCarrierStream.Length == 0)
+            {
+                return null;
+            }
+
+            messageCarrierStream.Position = 0;
+
+            var messageCarrier = Serializer.Deserialize<MessageCarrier>(messageCarrierStream);
+            var messageStream = new MemoryStream(messageCarrier.Message);
+            return Serializer.Deserialize(messageCarrier.MessageType, messageStream) as Message;
         }
 
         public void Write(TcpClient client, Message message)
         {
-            var memoryStream = new MemoryStream();
-            Serializer.Serialize(memoryStream, message);
+            var serializedMessage = new MemoryStream();
+            Serializer.Serialize(serializedMessage, message);
+
+            var messageCarrier = new MessageCarrier
+            {
+                MessageType = message.GetType(),
+                Message = serializedMessage.ToArray()
+            };
+
+            var messageCarrierStream = new MemoryStream();
+            Serializer.Serialize(messageCarrierStream, messageCarrier);
+
             var stream = client.GetStream();
-            stream.Write(memoryStream.ToArray(), 0, (int)memoryStream.Length);
+            stream.Write(messageCarrierStream.ToArray(), 0, (int)messageCarrierStream.Length);
         }
     }
 }

@@ -320,10 +320,17 @@ namespace Monopoly
 
         public void Start(int players)
         {
-            if (players < GameConstants.MinimumPlayers || players > GameConstants.MaximumPlayers) throw new MonopolyException($"Invalid players count {players}");
+            if (players < GameConstants.MinimumPlayers || players > GameConstants.MaximumPlayers)
+            {
+                throw new MonopolyException($"Invalid players count {players}");
+            }
 
             CurrentPlayers.Clear();
-            foreach (var space in Spaces) space.Clear();
+
+            foreach (var space in Spaces)
+            {
+                space.Clear();
+            }
 
             var allTokens = TokenNames.AllTokens();
             var totalTokens = TokenNames.TotalTokens();
@@ -332,24 +339,40 @@ namespace Monopoly
 
             for (int index = 0; CurrentPlayers.Count < players;)
             {
-                if (!noRandom) index = random.Next(totalTokens);
+                if (!noRandom)
+                {
+                    index = random.Next(totalTokens);
+                }
 
                 var player = this.players.First(x => x.Name == allTokens[index]);
 
                 if (!CurrentPlayers.Contains(player))
                 {
                     CurrentPlayers.Add(player);
-                    if (noRandom) noRandom = false;
+
+                    if (noRandom)
+                    {
+                        noRandom = false;
+                    }
                 }
                 else
                 {
-                    if (++index == totalTokens) index = 0;
+                    if (++index == totalTokens)
+                    {
+                        index = 0;
+                    }
+
                     noRandom = true;
                 }
             }
 
             Spaces[0].SetVisitors(CurrentPlayers);
-            foreach (var player in this.players) player.Money = GameConstants.InitialMoney;
+
+            foreach (var player in this.players)
+            {
+                player.Money = GameConstants.InitialMoney;
+            }
+
             SetCurrentPlayer(0);
 
             Running = true;
@@ -364,20 +387,29 @@ namespace Monopoly
 
         public void ThrowDice()
         {
-            if (!Running) return;
+            if (!Running)
+            {
+                return;
+            }
 
             Random random = new Random();
             firstDie = random.Next(GameConstants.MaximumDiceValue) + 1;
             secondDie = random.Next(GameConstants.MaximumDiceValue) + 1;
             var sourceSpace = Spaces.FirstOrDefault(x => x.Visitors.Contains(currentPlayer));
 
-            if (sourceSpace == null) throw new MonopolyException($"Player '{currentPlayer.Name}' wasn't found at board.");
+            if (sourceSpace == null)
+            {
+                throw new MonopolyException($"Player '{currentPlayer.Name}' wasn't found at board.");
+            }
 
             sourceSpace.Visitors.Remove(currentPlayer);
             var spaceIndex = Spaces.IndexOf(sourceSpace);
             spaceIndex += firstDie + secondDie;
 
-            if (spaceIndex >= Spaces.Count()) spaceIndex %= Spaces.Count();
+            if (spaceIndex >= Spaces.Count())
+            {
+                spaceIndex %= Spaces.Count();
+            }
 
             var destinationSpace = Spaces[spaceIndex];
             destinationSpace.Visitors.Add(currentPlayer);

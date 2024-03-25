@@ -1,4 +1,5 @@
-﻿using Shared;
+﻿using Server.Models;
+using Shared;
 using Shared.Messages;
 using System;
 using System.Collections.Concurrent;
@@ -15,7 +16,8 @@ namespace Server
         #region Fields
 
         private static long stopped = 0;
-        private static ConcurrentBag<Thread> clients = new ConcurrentBag<Thread>();
+        private static ConcurrentDictionary<ClientKey, Thread> clients = new ConcurrentDictionary<ClientKey, Thread>();
+        private static ConcurrentBag<Game> games = new ConcurrentBag<Game>();
         private static MessageService messageService = new MessageService();
         private Configuration configuration;
         private Thread connectionListener;
@@ -52,16 +54,30 @@ namespace Server
                 {
                     var client = listener.AcceptTcpClient();
 
-                    if (client.Client.RemoteEndPoint is IPEndPoint iPEndPoint)
+                    if (!(client.Client.RemoteEndPoint is IPEndPoint iPEndPoint))
                     {
-                        Console.WriteLine($"New client connected from {iPEndPoint.Address}:{iPEndPoint.Port}");
+                        Console.WriteLine($"Client remote end point is not in the form IP address and port");
+                        continue;
                     }
 
+                    Console.WriteLine($"New client connected from {iPEndPoint.Address}:{iPEndPoint.Port}");
+
                     var clientThread = new Thread(ClientListener);
+                    var clientKey = new ClientKey
+                    {
+                        Address = iPEndPoint.Address.ToString(),
+                        Port = iPEndPoint.Port
+                    };
 
-                    clients.Add(clientThread);
+                    clients.TryAdd(clientKey, clientThread);
 
-                    clientThread.Start(client);
+                    var clientThreadParams = new ClientThreadParameters
+                    {
+                        Client = client,
+                        ClientKey = clientKey
+                    };
+
+                    clientThread.Start(clientThreadParams);
                 }
             }
             catch (Exception e)
@@ -72,14 +88,58 @@ namespace Server
 
         private static void ClientListener(object data)
         {
-            if (!(data is TcpClient client))
+            if (!(data is ClientThreadParameters clientThreadParameters))
             {
+                Console.WriteLine($"Invalid client thread parameters: {nameof(data)}");
                 return;
             }
 
             while (!Stopped())
             {
-                var message = messageService.Read(client);
+                var message = messageService.Read(clientThreadParameters.Client);
+
+                if (message is CreateGameMessage createGameMessage)
+                {
+                    HandleCreateGameMessage(clientThreadParameters, createGameMessage);
+                }
+                else
+                {
+                    Console.WriteLine($"Unknown message type: {nameof(message)}");
+                }
+            }
+        }
+
+        private static void HandleCreateGameMessage(ClientThreadParameters clientThreadParameters, CreateGameMessage createGameMessage)
+        {
+            Game existingGame = null;
+            var gamesEnumerator = games.GetEnumerator();
+
+            while (gamesEnumerator.MoveNext())
+            {
+                var game = gamesEnumerator.Current;
+
+                if (game.Players.ContainsKey(clientThreadParameters.ClientKey))
+                {
+                    messageService.Write(clientThreadParameters.Client, new PlayerInGameMessage());
+                    existingGame = game;
+                    break;
+                }
+            }
+
+            if (existingGame == null)
+            {
+                var game = new Game();
+                var clientKey = new ClientKey(clientThreadParameters.ClientKey);
+                var player = new Player
+                {
+                    IsOwner = true
+                };
+
+                game.Players.Add(clientKey, player);
+
+                games.Add(game);
+
+                messageService.Write(clientThreadParameters.Client, new GameCreatedMessage());
             }
         }
 

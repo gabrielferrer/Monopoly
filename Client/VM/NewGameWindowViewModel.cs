@@ -34,7 +34,7 @@ namespace Monopoly.VM
         private void Accept()
         {
             Window?.Close();
-            NewGame?.Invoke(this, new Events.NewGameArgs { Players = Players });
+            NewGame?.Invoke(this, new Events.NewGameArgs());
         }
 
         private void Cancel()

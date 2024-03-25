@@ -66,9 +66,12 @@
   <ItemGroup>
     <Compile Include="ConnectionParameters.cs" />
     <Compile Include="Messages\CreateGameMessage.cs" />
+    <Compile Include="Messages\GameCreatedMessage.cs" />
     <Compile Include="Messages\IMessageService.cs" />
     <Compile Include="Messages\Message.cs" />
+    <Compile Include="Messages\MessageCarrier.cs" />
     <Compile Include="Messages\MessageService.cs" />
+    <Compile Include="Messages\PlayerInGameMessage.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RelayCommand.cs" />
     <Compile Include="ServiceLocator.cs" />

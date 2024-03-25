@@ -11,4 +11,6 @@
 /Server/obj
 /Shared/bin
 /Shared/obj
+/Tests/bin
+/Tests/obj
 /packages

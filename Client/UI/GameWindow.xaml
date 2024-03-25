@@ -68,58 +68,73 @@
                 </ItemsControl.ItemContainerStyle>
             </ItemsControl>
         </ScrollViewer>
-        <StackPanel
-            Grid.Row="2"
-            Style="{StaticResource BottomBarStyle}">
+        <Grid
+            Grid.Row="2">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition
+                    Width="*" />
+                <ColumnDefinition
+                    Width="Auto" />
+            </Grid.ColumnDefinitions>
             <Border
-                Style="{StaticResource InformationBorderStyle}">
+                Style="{StaticResource StatusBorderStyle}">
                 <TextBlock
                     Style="{StaticResource InformationTextStyle}"
-                    Text="Current Player:" />
+                    Text="{Binding Status}" />
             </Border>
-            <Border
-                Style="{StaticResource PlayerDataBorderStyle}">
-                <TextBlock
-                    Style="{StaticResource InformationTextStyle}"
-                    Text="{Binding CurrentPlayerName}" />
-            </Border>
-            <Border
-                Background="{Binding CurrentPlayerColor}"
-                Style="{StaticResource CurrentPlayerBorderStyle}" />
-            <Border
-                Style="{StaticResource InformationBorderStyle}">
-                <TextBlock
-                    Style="{StaticResource InformationTextStyle}"
-                    Text="Money:" />
-            </Border>
-            <Border
-                Style="{StaticResource PlayerDataBorderStyle}">
-                <TextBlock
-                    Style="{StaticResource MoneyTextStyle}"
-                    Text="{Binding CurrentPlayerMoney}" />
-            </Border>
-            <Button
-                Command="{Binding ThrowDiceCommand}"
-                Content="Throw Dice"
-                Style="{StaticResource ThrowDiceButtonStyle}" />
-            <Border
-                Style="{StaticResource InformationBorderStyle}">
-                <TextBlock
-                    Style="{StaticResource InformationTextStyle}"
-                    Text="Dice:" />
-            </Border>
-            <Border
-                Style="{StaticResource DiceBorderStyle}">
-                <TextBlock
-                    Style="{StaticResource DiceTextStyle}"
-                    Text="{Binding FirstDie}" />
-            </Border>
-            <Border
-                Style="{StaticResource DiceBorderStyle}">
-                <TextBlock
-                    Style="{StaticResource DiceTextStyle}"
-                    Text="{Binding SecondDie}" />
-            </Border>
-        </StackPanel>
+            <StackPanel
+                Grid.Column="1"
+                Style="{StaticResource InformationPanelStyle}">
+                <Border
+                    Style="{StaticResource InformationBorderStyle}">
+                    <TextBlock
+                        Style="{StaticResource InformationTextStyle}"
+                        Text="Current Player:" />
+                </Border>
+                <Border
+                    Style="{StaticResource PlayerDataBorderStyle}">
+                    <TextBlock
+                        Style="{StaticResource InformationTextStyle}"
+                        Text="{Binding CurrentPlayerName}" />
+                </Border>
+                <Border
+                    Background="{Binding CurrentPlayerColor}"
+                    Style="{StaticResource CurrentPlayerBorderStyle}" />
+                <Border
+                    Style="{StaticResource InformationBorderStyle}">
+                    <TextBlock
+                        Style="{StaticResource InformationTextStyle}"
+                        Text="Money:" />
+                </Border>
+                <Border
+                    Style="{StaticResource PlayerDataBorderStyle}">
+                    <TextBlock
+                        Style="{StaticResource MoneyTextStyle}"
+                        Text="{Binding CurrentPlayerMoney}" />
+                </Border>
+                <Button
+                    Command="{Binding ThrowDiceCommand}"
+                    Content="Throw Dice"
+                    Style="{StaticResource ThrowDiceButtonStyle}" />
+                <Border
+                    Style="{StaticResource InformationBorderStyle}">
+                    <TextBlock
+                        Style="{StaticResource InformationTextStyle}"
+                        Text="Dice:" />
+                </Border>
+                <Border
+                    Style="{StaticResource DiceBorderStyle}">
+                    <TextBlock
+                        Style="{StaticResource DiceTextStyle}"
+                        Text="{Binding FirstDie}" />
+                </Border>
+                <Border
+                    Style="{StaticResource DiceBorderStyle}">
+                    <TextBlock
+                        Style="{StaticResource DiceTextStyle}"
+                        Text="{Binding SecondDie}" />
+                </Border>
+            </StackPanel>
+        </Grid>
     </Grid>
 </ui:View>

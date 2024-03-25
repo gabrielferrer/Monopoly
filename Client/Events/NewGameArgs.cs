@@ -2,6 +2,5 @@
 {
     public class NewGameArgs : System.EventArgs
     {
-        public int Players { get; set; }
     }
 }

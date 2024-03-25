@@ -339,7 +339,18 @@
         WestCellTemplate="{StaticResource WestCellTemplate}" />
 
     <Style
-        x:Key="BottomBarStyle"
+        x:Key="StatusBorderStyle"
+        TargetType="{x:Type Border}">
+        <Setter
+            Property="VerticalAlignment"
+            Value="Center" />
+        <Setter
+            Property="Margin"
+            Value="3" />
+    </Style>
+
+    <Style
+        x:Key="InformationPanelStyle"
         TargetType="{x:Type StackPanel}">
         <Setter
             Property="Orientation"
