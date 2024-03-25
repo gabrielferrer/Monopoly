@@ -5,12 +5,6 @@ namespace Monopoly.VM
 {
     public class NewGameWindowViewModel : WindowViewModel
     {
-        #region Fields
-
-        private int players;
-
-        #endregion
-
         #region Events
 
         public delegate void NewGameHandler(object sender, Events.NewGameArgs args);
@@ -47,20 +41,6 @@ namespace Monopoly.VM
         #region Properties
 
         private bool CanAccept => true;
-
-        public int Players
-        {
-            get
-            {
-                return players;
-            }
-            set
-            {
-                if (players == value) return;
-                players = value;
-                OnPropertyChanged();
-            }
-        }
 
         #endregion
 

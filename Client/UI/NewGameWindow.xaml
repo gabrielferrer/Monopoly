@@ -32,6 +32,7 @@
             <RowDefinition
                 Height="Auto" />
         </Grid.RowDefinitions>
+        <!--
         <TextBlock
             Style="{StaticResource TitleStyle}"
             Text="Players (2-8)" />
@@ -39,6 +40,7 @@
             Grid.Column="1"
             Style="{StaticResource BoxStyle}"
             Text="{Binding Players}" />
+        -->
         <Grid
             Grid.Row="2"
             Grid.ColumnSpan="2">

@@ -31,9 +31,17 @@
                     Header="Connect..."
                     IsEnabled="{Binding IsConnected, Converter={ui:BoolNotConverter}}" />
                 <MenuItem
+                    Command="{Binding DisconnectCommand}"
+                    Header="Disconnect"
+                    IsEnabled="{Binding IsConnected}" />
+                <MenuItem
                     Command="{Binding NewGameCommand}"
                     Header="New Game"
-                    IsEnabled="{Binding GameInProcess, Converter={ui:BoolNotConverter}}" />
+                    IsEnabled="{Binding IsPlaying, Converter={ui:BoolNotConverter}}" />
+                <MenuItem
+                    Command="{Binding JoinGameCommand}"
+                    Header="Join Game"
+                    IsEnabled="{Binding IsPlaying, Converter={ui:BoolNotConverter}}" />
             </MenuItem>
         </Menu>
         <ScrollViewer

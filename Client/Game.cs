@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
-using System.Windows;
 
 namespace Monopoly
 {
@@ -10,7 +9,6 @@ namespace Monopoly
     {
         #region Fields
 
-        private List<Titles.TitleDeed> titleDeeds;
         private List<Cards.CommunityChest> communityChest;
         private List<Cards.Chance> chance;
         private List<VM.Player> players;
@@ -91,80 +89,6 @@ namespace Monopoly
             chance.Add(new Cards.Chance(Cards.ChanceTexts.TakeWalkOnBoardwalk, RuleTakeWalkOnBoardwalk));
             chance.Add(new Cards.Chance(Cards.ChanceTexts.ElectedChairman, RuleElectedChairman));
             chance.Add(new Cards.Chance(Cards.ChanceTexts.LoanMatures, RuleLoanMatures));
-
-            titleDeeds = new List<Titles.TitleDeed>();
-
-            titleDeeds.Add(new Titles.Street(PropertyNames.MediterraneanAvenue, 60, 2, 250, new[] { 10, 30, 90, 160 }, 30, 50, 50));
-            titleDeeds.Add(new Titles.Street(PropertyNames.BalticAvenue, 60, 4, 450, new[] { 20, 60, 180, 320 }, 30, 50, 50));
-            titleDeeds.Add(new Titles.Railroad(PropertyNames.ReadingRailroad, 200, 25, new[] { 50, 100, 200 }, 100));
-            titleDeeds.Add(new Titles.Street(PropertyNames.OrientalAvenue, 100, 6, 50, new[] { 30, 90, 270, 400 }, 550, 50, 50));
-            titleDeeds.Add(new Titles.Street(PropertyNames.VermontAvenue, 100, 6, 50, new[] { 30, 90, 270, 400 }, 550, 50, 50));
-            titleDeeds.Add(new Titles.Street(PropertyNames.ConnecticutAvenue, 120, 8, 60, new[] { 40, 100, 300, 450 }, 600, 50, 50));
-            titleDeeds.Add(new Titles.Street(PropertyNames.StCharlesPlace, 140, 10, 70, new[] { 50, 150, 450, 625 }, 750, 100, 100));
-            titleDeeds.Add(new Titles.Utility(PropertyNames.ElectricCompany, 150, 75));
-            titleDeeds.Add(new Titles.Street(PropertyNames.StatesAvenue, 140, 10, 70, new[] { 50, 150, 450, 625 }, 750, 100, 100));
-            titleDeeds.Add(new Titles.Street(PropertyNames.VirginiaAvenue, 160, 12, 80, new[] { 60, 180, 500, 700 }, 900, 100, 100));
-            titleDeeds.Add(new Titles.Railroad(PropertyNames.PennsylvaniaRailroad, 200, 25, new[] { 50, 100, 200 }, 100));
-            titleDeeds.Add(new Titles.Street(PropertyNames.StJamesPlace, 180, 14, 90, new[] { 70, 200, 550, 750 }, 950, 100, 100));
-            titleDeeds.Add(new Titles.Street(PropertyNames.TennesseeAvenue, 180, 14, 90, new[] { 70, 200, 550, 750 }, 950, 100, 100));
-            titleDeeds.Add(new Titles.Street(PropertyNames.NewYorkAvenue, 200, 16, 100, new[] { 80, 220, 600, 800 }, 1000, 100, 100));
-            titleDeeds.Add(new Titles.Street(PropertyNames.KentuckyAvenue, 220, 18, 110, new[] { 90, 250, 700, 875 }, 1050, 150, 150));
-            titleDeeds.Add(new Titles.Street(PropertyNames.IndianaAvenue, 220, 18, 110, new[] { 90, 250, 700, 875 }, 1050, 150, 150));
-            titleDeeds.Add(new Titles.Street(PropertyNames.IllinoisAvenue, 240, 20, 120, new[] { 100, 300, 750, 925 }, 1100, 150, 150));
-            titleDeeds.Add(new Titles.Railroad(PropertyNames.BnORailroad, 200, 25, new[] { 50, 100, 200 }, 100));
-            titleDeeds.Add(new Titles.Street(PropertyNames.AtlanticAvenue, 260, 22, 130, new[] { 110, 330, 800, 975 }, 1150, 150, 150));
-            titleDeeds.Add(new Titles.Street(PropertyNames.VentnorAvenue, 260, 22, 130, new[] { 110, 330, 800, 975 }, 1150, 150, 150));
-            titleDeeds.Add(new Titles.Utility(PropertyNames.WaterWorks, 150, 75));
-            titleDeeds.Add(new Titles.Street(PropertyNames.MarvinGardens, 280, 24, 140, new[] { 120, 360, 850, 1025 }, 1200, 150, 150));
-            titleDeeds.Add(new Titles.Street(PropertyNames.PacificAvenue, 300, 26, 150, new[] { 130, 390, 900, 1100 }, 1275, 200, 200));
-            titleDeeds.Add(new Titles.Street(PropertyNames.NorthCarolinaAvenue, 300, 26, 150, new[] { 130, 390, 900, 1100 }, 1275, 200, 200));
-            titleDeeds.Add(new Titles.Street(PropertyNames.PennsylvaniaAvenue, 320, 28, 160, new[] { 150, 450, 1000, 1200 }, 1400, 200, 200));
-            titleDeeds.Add(new Titles.Railroad(PropertyNames.ShortLine, 200, 25, new[] { 50, 100, 200 }, 100));
-            titleDeeds.Add(new Titles.Street(PropertyNames.ParkPlace, 350, 35, 175, new[] { 175, 500, 1100, 1300 }, 1500, 200, 200));
-            titleDeeds.Add(new Titles.Street(PropertyNames.Boardwalk, 400, 50, 200, new[] { 200, 600, 1400, 1700 }, 2000, 200, 200));
-
-            Spaces = new ObservableCollection<VM.Spaces.Space>();
-
-            Spaces.Add(new VM.Spaces.Go(GameConstants.Salary, new VM.Spaces.SpaceDto { Row = 10, Column = 10, RowSpan = 1, ColumnSpan = 1, Border = new Thickness(UI.Constants.BoardCellBorderThickness), Orientation = UI.BoardCellOrientation.SouthEast, StripeColor = null }));
-            Spaces.Add(new VM.Spaces.Street(titleDeeds.First(x => x.Name == PropertyNames.MediterraneanAvenue), new VM.Spaces.SpaceDto { Row = 10, Column = 9, RowSpan = 1, ColumnSpan = 1, Border = new Thickness(0, UI.Constants.BoardCellBorderThickness, 0, UI.Constants.BoardCellBorderThickness), Orientation = UI.BoardCellOrientation.South, StripeColor = UI.PropertyColors.FirstGroup }));
-            Spaces.Add(new VM.Spaces.CommunityChest(new VM.Spaces.SpaceDto { Row = 10, Column = 8, RowSpan = 1, ColumnSpan = 1, Border = new Thickness(0, UI.Constants.BoardCellBorderThickness, UI.Constants.BoardCellBorderThickness, UI.Constants.BoardCellBorderThickness), Orientation = UI.BoardCellOrientation.South, StripeColor = null }));
-            Spaces.Add(new VM.Spaces.Street(titleDeeds.First(x => x.Name == PropertyNames.BalticAvenue), new VM.Spaces.SpaceDto { Row = 10, Column = 7, RowSpan = 1, ColumnSpan = 1, Border = new Thickness(0, UI.Constants.BoardCellBorderThickness, UI.Constants.BoardCellBorderThickness, UI.Constants.BoardCellBorderThickness), Orientation = UI.BoardCellOrientation.South, StripeColor = UI.PropertyColors.FirstGroup }));
-            Spaces.Add(new VM.Spaces.IncommeTax(GameConstants.IncommeTaxPercentage, GameConstants.IncommeTax, new VM.Spaces.SpaceDto { Row = 10, Column = 6, RowSpan = 1, ColumnSpan = 1, Border = new Thickness(0, UI.Constants.BoardCellBorderThickness, UI.Constants.BoardCellBorderThickness, UI.Constants.BoardCellBorderThickness), Orientation = UI.BoardCellOrientation.South, StripeColor = null }));
-            Spaces.Add(new VM.Spaces.Railroad(titleDeeds.First(x => x.Name == PropertyNames.ReadingRailroad), new VM.Spaces.SpaceDto { Row = 10, Column = 5, RowSpan = 1, ColumnSpan = 1, Border = new Thickness(0, UI.Constants.BoardCellBorderThickness, UI.Constants.BoardCellBorderThickness, UI.Constants.BoardCellBorderThickness), Orientation = UI.BoardCellOrientation.South, StripeColor = null }));
-            Spaces.Add(new VM.Spaces.Street(titleDeeds.First(x => x.Name == PropertyNames.OrientalAvenue), new VM.Spaces.SpaceDto { Row = 10, Column = 4, RowSpan = 1, ColumnSpan = 1, Border = new Thickness(0, UI.Constants.BoardCellBorderThickness, UI.Constants.BoardCellBorderThickness, UI.Constants.BoardCellBorderThickness), Orientation = UI.BoardCellOrientation.South, StripeColor = UI.PropertyColors.SecondGroup }));
-            Spaces.Add(new VM.Spaces.Chance(new VM.Spaces.SpaceDto { Row = 10, Column = 3, RowSpan = 1, ColumnSpan = 1, Border = new Thickness(0, UI.Constants.BoardCellBorderThickness, UI.Constants.BoardCellBorderThickness, UI.Constants.BoardCellBorderThickness), Orientation = UI.BoardCellOrientation.South, StripeColor = null }));
-            Spaces.Add(new VM.Spaces.Street(titleDeeds.First(x => x.Name == PropertyNames.VermontAvenue), new VM.Spaces.SpaceDto { Row = 10, Column = 2, RowSpan = 1, ColumnSpan = 1, Border = new Thickness(0, UI.Constants.BoardCellBorderThickness, UI.Constants.BoardCellBorderThickness, UI.Constants.BoardCellBorderThickness), Orientation = UI.BoardCellOrientation.South, StripeColor = UI.PropertyColors.SecondGroup }));
-            Spaces.Add(new VM.Spaces.Street(titleDeeds.First(x => x.Name == PropertyNames.ConnecticutAvenue), new VM.Spaces.SpaceDto { Row = 10, Column = 1, RowSpan = 1, ColumnSpan = 1, Border = new Thickness(0, UI.Constants.BoardCellBorderThickness, UI.Constants.BoardCellBorderThickness, UI.Constants.BoardCellBorderThickness), Orientation = UI.BoardCellOrientation.South, StripeColor = UI.PropertyColors.SecondGroup }));
-            Spaces.Add(new VM.Spaces.Jail(new VM.Spaces.SpaceDto { Row = 10, Column = 0, RowSpan = 1, ColumnSpan = 1, Border = new Thickness(UI.Constants.BoardCellBorderThickness), Orientation = UI.BoardCellOrientation.SouthWest, StripeColor = null }));
-            Spaces.Add(new VM.Spaces.Street(titleDeeds.First(x => x.Name == PropertyNames.StCharlesPlace), new VM.Spaces.SpaceDto { Row = 9, Column = 0, RowSpan = 1, ColumnSpan = 1, Border = new Thickness(UI.Constants.BoardCellBorderThickness, 0, UI.Constants.BoardCellBorderThickness, 0), Orientation = UI.BoardCellOrientation.West, StripeColor = UI.PropertyColors.ThirdGroup }));
-            Spaces.Add(new VM.Spaces.Utility(titleDeeds.First(x => x.Name == PropertyNames.ElectricCompany), new VM.Spaces.SpaceDto { Row = 8, Column = 0, RowSpan = 1, ColumnSpan = 1, Border = new Thickness(UI.Constants.BoardCellBorderThickness, 0, UI.Constants.BoardCellBorderThickness, UI.Constants.BoardCellBorderThickness), Orientation = UI.BoardCellOrientation.West, StripeColor = null }));
-            Spaces.Add(new VM.Spaces.Street(titleDeeds.First(x => x.Name == PropertyNames.StatesAvenue), new VM.Spaces.SpaceDto { Row = 7, Column = 0, RowSpan = 1, ColumnSpan = 1, Border = new Thickness(UI.Constants.BoardCellBorderThickness, 0, UI.Constants.BoardCellBorderThickness, UI.Constants.BoardCellBorderThickness), Orientation = UI.BoardCellOrientation.West, StripeColor = UI.PropertyColors.ThirdGroup }));
-            Spaces.Add(new VM.Spaces.Street(titleDeeds.First(x => x.Name == PropertyNames.VirginiaAvenue), new VM.Spaces.SpaceDto { Row = 6, Column = 0, RowSpan = 1, ColumnSpan = 1, Border = new Thickness(UI.Constants.BoardCellBorderThickness, 0, UI.Constants.BoardCellBorderThickness, UI.Constants.BoardCellBorderThickness), Orientation = UI.BoardCellOrientation.West, StripeColor = UI.PropertyColors.ThirdGroup }));
-            Spaces.Add(new VM.Spaces.Railroad(titleDeeds.First(x => x.Name == PropertyNames.PennsylvaniaRailroad), new VM.Spaces.SpaceDto { Row = 5, Column = 0, RowSpan = 1, ColumnSpan = 1, Border = new Thickness(UI.Constants.BoardCellBorderThickness, 0, UI.Constants.BoardCellBorderThickness, UI.Constants.BoardCellBorderThickness), Orientation = UI.BoardCellOrientation.West, StripeColor = null }));
-            Spaces.Add(new VM.Spaces.Street(titleDeeds.First(x => x.Name == PropertyNames.StJamesPlace), new VM.Spaces.SpaceDto { Row = 4, Column = 0, RowSpan = 1, ColumnSpan = 1, Border = new Thickness(UI.Constants.BoardCellBorderThickness, 0, UI.Constants.BoardCellBorderThickness, UI.Constants.BoardCellBorderThickness), Orientation = UI.BoardCellOrientation.West, StripeColor = UI.PropertyColors.FourthGroup }));
-            Spaces.Add(new VM.Spaces.CommunityChest(new VM.Spaces.SpaceDto { Row = 3, Column = 0, RowSpan = 1, ColumnSpan = 1, Border = new Thickness(UI.Constants.BoardCellBorderThickness, 0, UI.Constants.BoardCellBorderThickness, UI.Constants.BoardCellBorderThickness), Orientation = UI.BoardCellOrientation.West, StripeColor = null }));
-            Spaces.Add(new VM.Spaces.Street(titleDeeds.First(x => x.Name == PropertyNames.TennesseeAvenue), new VM.Spaces.SpaceDto { Row = 2, Column = 0, RowSpan = 1, ColumnSpan = 1, Border = new Thickness(UI.Constants.BoardCellBorderThickness, 0, UI.Constants.BoardCellBorderThickness, UI.Constants.BoardCellBorderThickness), Orientation = UI.BoardCellOrientation.West, StripeColor = UI.PropertyColors.FourthGroup }));
-            Spaces.Add(new VM.Spaces.Street(titleDeeds.First(x => x.Name == PropertyNames.NewYorkAvenue), new VM.Spaces.SpaceDto { Row = 1, Column = 0, RowSpan = 1, ColumnSpan = 1, Border = new Thickness(UI.Constants.BoardCellBorderThickness, 0, UI.Constants.BoardCellBorderThickness, UI.Constants.BoardCellBorderThickness), Orientation = UI.BoardCellOrientation.West, StripeColor = UI.PropertyColors.FourthGroup }));
-            Spaces.Add(new VM.Spaces.Parking(new VM.Spaces.SpaceDto { Row = 0, Column = 0, RowSpan = 1, ColumnSpan = 1, Border = new Thickness(UI.Constants.BoardCellBorderThickness), Orientation = UI.BoardCellOrientation.NorthWest, StripeColor = null }));
-            Spaces.Add(new VM.Spaces.Street(titleDeeds.First(x => x.Name == PropertyNames.KentuckyAvenue), new VM.Spaces.SpaceDto { Row = 0, Column = 1, RowSpan = 1, ColumnSpan = 1, Border = new Thickness(0, UI.Constants.BoardCellBorderThickness, UI.Constants.BoardCellBorderThickness, UI.Constants.BoardCellBorderThickness), Orientation = UI.BoardCellOrientation.North, StripeColor = UI.PropertyColors.FifthGroup }));
-            Spaces.Add(new VM.Spaces.Chance(new VM.Spaces.SpaceDto { Row = 0, Column = 2, RowSpan = 1, ColumnSpan = 1, Border = new Thickness(0, UI.Constants.BoardCellBorderThickness, UI.Constants.BoardCellBorderThickness, UI.Constants.BoardCellBorderThickness), Orientation = UI.BoardCellOrientation.North, StripeColor = null }));
-            Spaces.Add(new VM.Spaces.Street(titleDeeds.First(x => x.Name == PropertyNames.IndianaAvenue), new VM.Spaces.SpaceDto { Row = 0, Column = 3, RowSpan = 1, ColumnSpan = 1, Border = new Thickness(0, UI.Constants.BoardCellBorderThickness, UI.Constants.BoardCellBorderThickness, UI.Constants.BoardCellBorderThickness), Orientation = UI.BoardCellOrientation.North, StripeColor = UI.PropertyColors.FifthGroup }));
-            Spaces.Add(new VM.Spaces.Street(titleDeeds.First(x => x.Name == PropertyNames.IllinoisAvenue), new VM.Spaces.SpaceDto { Row = 0, Column = 4, RowSpan = 1, ColumnSpan = 1, Border = new Thickness(0, UI.Constants.BoardCellBorderThickness, UI.Constants.BoardCellBorderThickness, UI.Constants.BoardCellBorderThickness), Orientation = UI.BoardCellOrientation.North, StripeColor = UI.PropertyColors.FifthGroup }));
-            Spaces.Add(new VM.Spaces.Railroad(titleDeeds.First(x => x.Name == PropertyNames.BnORailroad), new VM.Spaces.SpaceDto { Row = 0, Column = 5, RowSpan = 1, ColumnSpan = 1, Border = new Thickness(0, UI.Constants.BoardCellBorderThickness, UI.Constants.BoardCellBorderThickness, UI.Constants.BoardCellBorderThickness), Orientation = UI.BoardCellOrientation.North, StripeColor = null }));
-            Spaces.Add(new VM.Spaces.Street(titleDeeds.First(x => x.Name == PropertyNames.AtlanticAvenue), new VM.Spaces.SpaceDto { Row = 0, Column = 6, RowSpan = 1, ColumnSpan = 1, Border = new Thickness(0, UI.Constants.BoardCellBorderThickness, UI.Constants.BoardCellBorderThickness, UI.Constants.BoardCellBorderThickness), Orientation = UI.BoardCellOrientation.North, StripeColor = UI.PropertyColors.SixthGroup }));
-            Spaces.Add(new VM.Spaces.Street(titleDeeds.First(x => x.Name == PropertyNames.VentnorAvenue), new VM.Spaces.SpaceDto { Row = 0, Column = 7, RowSpan = 1, ColumnSpan = 1, Border = new Thickness(0, UI.Constants.BoardCellBorderThickness, UI.Constants.BoardCellBorderThickness, UI.Constants.BoardCellBorderThickness), Orientation = UI.BoardCellOrientation.North, StripeColor = UI.PropertyColors.SixthGroup }));
-            Spaces.Add(new VM.Spaces.Utility(titleDeeds.First(x => x.Name == PropertyNames.WaterWorks), new VM.Spaces.SpaceDto { Row = 0, Column = 8, RowSpan = 1, ColumnSpan = 1, Border = new Thickness(0, UI.Constants.BoardCellBorderThickness, UI.Constants.BoardCellBorderThickness, UI.Constants.BoardCellBorderThickness), Orientation = UI.BoardCellOrientation.North, StripeColor = null }));
-            Spaces.Add(new VM.Spaces.Street(titleDeeds.First(x => x.Name == PropertyNames.MarvinGardens), new VM.Spaces.SpaceDto { Row = 0, Column = 9, RowSpan = 1, ColumnSpan = 1, Border = new Thickness(0, UI.Constants.BoardCellBorderThickness, 0, UI.Constants.BoardCellBorderThickness), Orientation = UI.BoardCellOrientation.North, StripeColor = UI.PropertyColors.SixthGroup }));
-            Spaces.Add(new VM.Spaces.GoToJail(new VM.Spaces.SpaceDto { Row = 0, Column = 10, RowSpan = 1, ColumnSpan = 1, Border = new Thickness(UI.Constants.BoardCellBorderThickness), Orientation = UI.BoardCellOrientation.NorthEast, StripeColor = null }));
-            Spaces.Add(new VM.Spaces.Street(titleDeeds.First(x => x.Name == PropertyNames.PacificAvenue), new VM.Spaces.SpaceDto { Row = 1, Column = 10, RowSpan = 1, ColumnSpan = 1, Border = new Thickness(UI.Constants.BoardCellBorderThickness, 0, UI.Constants.BoardCellBorderThickness, UI.Constants.BoardCellBorderThickness), Orientation = UI.BoardCellOrientation.East, StripeColor = UI.PropertyColors.SeventhGroup }));
-            Spaces.Add(new VM.Spaces.Street(titleDeeds.First(x => x.Name == PropertyNames.NorthCarolinaAvenue), new VM.Spaces.SpaceDto { Row = 2, Column = 10, RowSpan = 1, ColumnSpan = 1, Border = new Thickness(UI.Constants.BoardCellBorderThickness, 0, UI.Constants.BoardCellBorderThickness, UI.Constants.BoardCellBorderThickness), Orientation = UI.BoardCellOrientation.East, StripeColor = UI.PropertyColors.SeventhGroup }));
-            Spaces.Add(new VM.Spaces.CommunityChest(new VM.Spaces.SpaceDto { Row = 3, Column = 10, RowSpan = 1, ColumnSpan = 1, Border = new Thickness(UI.Constants.BoardCellBorderThickness, 0, UI.Constants.BoardCellBorderThickness, UI.Constants.BoardCellBorderThickness), Orientation = UI.BoardCellOrientation.East, StripeColor = null }));
-            Spaces.Add(new VM.Spaces.Street(titleDeeds.First(x => x.Name == PropertyNames.PennsylvaniaAvenue), new VM.Spaces.SpaceDto { Row = 4, Column = 10, RowSpan = 1, ColumnSpan = 1, Border = new Thickness(UI.Constants.BoardCellBorderThickness, 0, UI.Constants.BoardCellBorderThickness, UI.Constants.BoardCellBorderThickness), Orientation = UI.BoardCellOrientation.East, StripeColor = UI.PropertyColors.SeventhGroup }));
-            Spaces.Add(new VM.Spaces.Railroad(titleDeeds.First(x => x.Name == PropertyNames.ShortLine), new VM.Spaces.SpaceDto { Row = 5, Column = 10, RowSpan = 1, ColumnSpan = 1, Border = new Thickness(UI.Constants.BoardCellBorderThickness, 0, UI.Constants.BoardCellBorderThickness, UI.Constants.BoardCellBorderThickness), Orientation = UI.BoardCellOrientation.East, StripeColor = null }));
-            Spaces.Add(new VM.Spaces.Chance(new VM.Spaces.SpaceDto { Row = 6, Column = 10, RowSpan = 1, ColumnSpan = 1, Border = new Thickness(UI.Constants.BoardCellBorderThickness, 0, UI.Constants.BoardCellBorderThickness, UI.Constants.BoardCellBorderThickness), Orientation = UI.BoardCellOrientation.East, StripeColor = null }));
-            Spaces.Add(new VM.Spaces.Street(titleDeeds.First(x => x.Name == PropertyNames.ParkPlace), new VM.Spaces.SpaceDto { Row = 7, Column = 10, RowSpan = 1, ColumnSpan = 1, Border = new Thickness(UI.Constants.BoardCellBorderThickness, 0, UI.Constants.BoardCellBorderThickness, UI.Constants.BoardCellBorderThickness), Orientation = UI.BoardCellOrientation.East, StripeColor = UI.PropertyColors.EighthGroup }));
-            Spaces.Add(new VM.Spaces.LuxuryTax(GameConstants.LuxuryTax, new VM.Spaces.SpaceDto { Row = 8, Column = 10, RowSpan = 1, ColumnSpan = 1, Border = new Thickness(UI.Constants.BoardCellBorderThickness, 0, UI.Constants.BoardCellBorderThickness, UI.Constants.BoardCellBorderThickness), Orientation = UI.BoardCellOrientation.East, StripeColor = null }));
-            Spaces.Add(new VM.Spaces.Street(titleDeeds.First(x => x.Name == PropertyNames.Boardwalk), new VM.Spaces.SpaceDto { Row = 9, Column = 10, RowSpan = 1, ColumnSpan = 1, Border = new Thickness(UI.Constants.BoardCellBorderThickness, 0, UI.Constants.BoardCellBorderThickness, 0), Orientation = UI.BoardCellOrientation.East, StripeColor = UI.PropertyColors.EighthGroup }));
 
             hotels = GameConstants.TotalHotels;
             houses = GameConstants.TotalHouses;
@@ -423,7 +347,6 @@ namespace Monopoly
 #if DEBUG
         public void Log(System.IO.StreamWriter stream)
         {
-            foreach (var titleDeed in titleDeeds) titleDeed.Log(stream);
             foreach (var card in communityChest) card.Log(stream);
             foreach (var card in chance) card.Log(stream);
             foreach (var player in players) player.Log(stream);
